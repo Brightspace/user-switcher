@@ -1,0 +1,33 @@
+{
+  "name": "user-switcher",
+  "description": "Brightspace User Switcher",
+  "private": true,
+  "scripts": {
+    "postinstall": "bower install",
+    "test": "npm run test:lint:js",
+    "test:lint:js": "eslint --ext .js,.html ."
+  },
+  "homepage": "https://github.com/Brightspace/user-switcher",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Brightspace/user-switcher.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Brightspace/user-switcher/issues"
+  },
+  "keywords": [
+    "d2l",
+    "user",
+    "switcher"
+  ],
+  "author": "D2L Corporation",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "bower": "^1.7.7",
+    "eslint": "^2.4.0",
+    "eslint-config-brightspace": "^0.2.1",
+    "eslint-plugin-html": "^1.4.0",
+    "polylint": "^2.10.1",
+    "rimraf": "^2.5.2"
+  }
+}

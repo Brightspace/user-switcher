@@ -1,0 +1,83 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-dropdown/d2l-dropdown.html">
+<link rel="import" href="../d2l-dropdown/d2l-dropdown-content.html">
+<link rel="import" href="../d2l-icons/d2l-icons.html">
+<link rel="import" href="../d2l-menu/d2l-menu.html">
+<link rel="import" href="../d2l-menu/d2l-menu-item.html">
+<link rel="import" href="./d2l-user-switcher-item.html">
+
+<dom-module id="d2l-user-switcher">
+	<template>
+		<style>
+			d2l-dropdown {
+				display: block;
+			}
+			.d2l-user-switcher-opener-container {
+				display: flex;
+				background: none;
+				border: none;
+				outline: none;
+				cursor: pointer;
+				font-family: inherit;
+				font-size: inherit;
+				font-weight: inherit;
+				letter-spacing: inherit;
+				line-height: inherit;
+				color: inherit;
+			}
+			.d2l-user-switcher-opener-container:hover,
+			.d2l-user-switcher-opener-container:focus {
+				color: var(--d2l-color-celestine);
+				text-decoration: underline;
+			}
+			.d2l-user-switcher-opener-container p, .d2l-user-switcher-opener-container img {
+				margin-top: auto;
+				margin-bottom: auto;
+			}
+			.d2l-user-switcher-opener-image {
+				max-width: 35px;
+				max-height: 35px;
+				margin: 10px;
+				border-radius: 10px;
+			}
+			.d2l-user-switcher-opener-chevron-down {
+				margin-top: auto;
+				margin-bottom: auto;
+				padding-left: 5px;
+				width: 15px;
+				height: 15px;
+			}
+		</style>
+
+		<div>
+			<d2l-dropdown>
+				<button class="d2l-dropdown-opener d2l-user-switcher-opener-container">
+					<img class="d2l-user-switcher-opener-image" src="http://i.imgur.com/1xYmDNP.png"></img>
+					<p>Hannah Bond</p>
+					<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
+				</button>
+				<d2l-dropdown-menu vertical-offset="5">
+					<d2l-menu label="User Switcher menu">
+						<d2l-user-switcher-item></d2l-user-switcher-item>
+						<d2l-user-switcher-item></d2l-user-switcher-item>
+					</d2l-menu>
+				</d2l-dropdown-menu>
+			</d2l-dropdown>
+		</div>
+	</template>
+	<script src="https://s.brightspace.com/lib/ifrau/0.19.0/ifrau/client.js"></script>
+	<script>
+		'use strict';
+
+		Polymer({
+			is: 'd2l-user-switcher',
+
+			behaviors: [
+			],
+
+			properties: {
+			}
+
+		});
+	</script>
+</dom-module>

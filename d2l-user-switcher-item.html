@@ -1,0 +1,65 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-icons/d2l-icons.html">
+<link rel="import" href="../d2l-menu/d2l-menu-item-behavior.html">
+<link rel="import" href="../d2l-menu/d2l-menu-item-styles.html">
+<link rel="import" href="../d2l-colors/d2l-colors.html">
+
+<dom-module id="d2l-user-switcher-item">
+	<template>
+		<style lang="scss" include="d2l-menu-item-styles">
+			.d2l-user-switcher-item-link {
+				text-decoration: none;
+			}
+			.d2l-user-switcher-item-container {
+				display: flex;
+			}
+			.d2l-user-switcher-item-image {
+				max-width: 90px;
+				max-height: 90px;
+				margin: 20px 15px 20px 25px;
+				border-radius: 10px;
+			}
+			.d2l-user-switcher-item-info {
+				margin-top: auto;
+				margin-bottom: auto;
+				margin-right: 10px;
+			}
+			.d2l-user-switcher-item-info p, .d2l-user-switcher-item-info h2 {
+				margin: 0;
+				text-decoration: none;
+				font-weight: normal;
+			}
+			.d2l-user-switcher-item-name {
+				color: var(--d2l-color-celestine);
+			}
+			.d2l-user-switcher-item-class, .d2l-user-switcher-item-school {
+				color: var(--d2l-color-ferrite);
+			}
+		</style>
+
+		<a href="javascript:void(0);" class="d2l-user-switcher-item-link d2l-user-switcher-item-container" tabindex="-1">
+			<img class="d2l-user-switcher-item-image" src="http://i.imgur.com/1xYmDNP.png"></img>
+			<div class="d2l-user-switcher-item-info">
+				<h2 class="d2l-user-switcher-item-name">Hannah Bond</h2>
+				<p class="d2l-user-switcher-item-class">Grade 6, Room 4</p>
+				<p class="d2l-user-switcher-item-school">Tecumseh Public School</p>
+			</div>
+		</a>
+	</template>
+	<script src="https://s.brightspace.com/lib/ifrau/0.19.0/ifrau/client.js"></script>
+	<script>
+		'use strict';
+
+		Polymer({
+			is: 'd2l-user-switcher-item',
+
+			behaviors: [
+				window.D2L.PolymerBehaviors.MenuItemBehavior
+			],
+
+			properties: {
+			}
+
+		});
+	</script>
+</dom-module>

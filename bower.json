@@ -1,0 +1,26 @@
+{
+  "name": "d2l-user-switcher",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Brightspace/user-switcher",
+  "authors": [
+    "Brightspace"
+  ],
+  "description": "D2L User Switcher",
+  "moduleType": [
+    "polymer"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d2l-icons": "^3.0.0",
+		"d2l-colors": "^2.2.3",
+    "d2l-dropdown": "^5.0.5",
+		"d2l-menu": "git://github.com/BrightspaceUI/menu.git#^0.3.5"
+  }
+}
