@@ -25,10 +25,12 @@
 				line-height: inherit;
 				color: inherit;
 			}
-			.d2l-user-switcher-opener-container:hover,
-			.d2l-user-switcher-opener-container:focus {
-				color: var(--d2l-color-celestine);
+			button:focus > d2l-icon,
+			button:hover > d2l-icon,
+			button:focus > p,
+			button:hover > p {
 				text-decoration: underline;
+				color: var(--d2l-color-celestine);
 			}
 			.d2l-user-switcher-opener-container p, .d2l-user-switcher-opener-container img {
 				margin-top: auto;
