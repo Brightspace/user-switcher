@@ -1,9 +1,10 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../d2l-dropdown/d2l-dropdown.html">
-<link rel="import" href="../d2l-dropdown/d2l-dropdown-content.html">
+<link rel="import" href="../d2l-dropdown/d2l-dropdown-menu.html">
 <link rel="import" href="../d2l-icons/d2l-icons.html">
 <link rel="import" href="../d2l-menu/d2l-menu.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item.html">
+<link rel="import" href="../d2l-menu/d2l-menu-item-link.html">
 <link rel="import" href="./d2l-user-switcher-item.html">
 
 <dom-module id="d2l-user-switcher">
@@ -51,21 +52,19 @@
 			}
 		</style>
 
-		<div>
-			<d2l-dropdown>
-				<button class="d2l-dropdown-opener d2l-user-switcher-opener-container" aria-label="Switch user: Hannah Bond selected">
-					<img class="d2l-user-switcher-opener-image" src="http://i.imgur.com/1xYmDNP.png"></img>
-					<p>Hannah Bond</p>
-					<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
-				</button>
-				<d2l-dropdown-menu vertical-offset="5">
-					<d2l-menu label="User Switcher menu">
-						<d2l-user-switcher-item></d2l-user-switcher-item>
-						<d2l-user-switcher-item></d2l-user-switcher-item>
-					</d2l-menu>
-				</d2l-dropdown-menu>
-			</d2l-dropdown>
-		</div>
+		<d2l-dropdown>
+			<button class="d2l-dropdown-opener d2l-user-switcher-opener-container" aria-label="Switch user: Hannah Bond selected">
+				<img class="d2l-user-switcher-opener-image" src="http://i.imgur.com/1xYmDNP.png"></img>
+				<p>Hannah Bond</p>
+				<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
+			</button>
+			<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
+				<d2l-menu label="User Switcher menu">
+					<d2l-user-switcher-item></d2l-user-switcher-item>
+					<d2l-user-switcher-item></d2l-user-switcher-item>
+				</d2l-menu>
+			</d2l-dropdown-menu>
+		</d2l-dropdown>
 	</template>
 	<script src="https://s.brightspace.com/lib/ifrau/0.19.0/ifrau/client.js"></script>
 	<script>
@@ -78,6 +77,10 @@
 			],
 
 			properties: {
+			},
+
+			close: function() {
+				this.$$('d2l-dropdown-menu').close();
 			}
 
 		});
