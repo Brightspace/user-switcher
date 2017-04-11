@@ -18,9 +18,11 @@
     "tests"
   ],
   "dependencies": {
-    "d2l-icons": "^3.0.0",
-		"d2l-colors": "^2.2.3",
+    "d2l-ajax": "^3.2.6",
+    "d2l-colors": "^2.2.3",
     "d2l-dropdown": "^5.0.5",
+    "d2l-hm-constants-behavior": "git://github.com/Brightspace/d2l-hm-constants-behavior.git#^1.0.0",
+    "d2l-icons": "^3.0.0",
 		"d2l-menu": "^0.3.0"
   }
 }

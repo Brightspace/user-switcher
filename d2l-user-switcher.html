@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../d2l-dropdown/d2l-dropdown.html">
 <link rel="import" href="../d2l-dropdown/d2l-dropdown-menu.html">
+<link rel="import" href="../d2l-hm-constants-behavior/d2l-hm-constants-behavior.html">
 <link rel="import" href="../d2l-icons/d2l-icons.html">
 <link rel="import" href="../d2l-menu/d2l-menu.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item.html">
@@ -63,8 +64,12 @@
 			</button>
 			<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
 				<d2l-menu label="User Switcher menu">
-					<d2l-user-switcher-item></d2l-user-switcher-item>
-					<d2l-user-switcher-item></d2l-user-switcher-item>
+					<template is="dom-repeat" items="{{parentData.entities}}">
+						<d2l-user-switcher-item
+							user-url="{{_getUserUrl(item)}}"
+							token={{item.properties.token}}>
+						</d2l-user-switcher-item>
+					</template>
 				</d2l-menu>
 			</d2l-dropdown-menu>
 		</d2l-dropdown>
@@ -77,11 +82,20 @@
 			is: 'd2l-user-switcher',
 
 			behaviors: [
+				window.D2L.Hypermedia.HMConstantsBehavior
 			],
 
 			properties: {
+				parentData: Object
 			},
 
+			_parseEntity: function(entity) {
+				return window.D2L.Hypermedia.Siren.Parse(entity);
+			},
+			_getUserUrl: function(user) {
+				var userEntity = this._parseEntity(user);
+				return (userEntity.getLinkByRel(this.HypermediaRels.user) || {}).href;
+			},
 			close: function() {
 				this.$$('d2l-dropdown-menu').close();
 			}
