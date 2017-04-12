@@ -3,6 +3,9 @@
 <link rel="import" href="../d2l-menu/d2l-menu-item-behavior.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item-styles.html">
 <link rel="import" href="../d2l-colors/d2l-colors.html">
+<link rel="import" href="../d2l-hm-constants-behavior/d2l-hm-constants-behavior.html">
+<link rel="import" href="../d2l-organization-hm-behavior/d2l-organization-hm-behavior.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
 
 <dom-module id="d2l-user-switcher-item">
 	<template>
@@ -39,10 +42,12 @@
 			}
 		</style>
 
+		<iron-ajax id="userRequest" url="[[userUrl]]" headers="[[_headers]]" on-iron-ajax-response="_onUserResponse"></iron-ajax>
+
 		<a href="javascript:void(0);" class="d2l-user-switcher-item-link d2l-user-switcher-item-container" tabindex="-1">
 			<img class="d2l-user-switcher-item-image" src="http://i.imgur.com/1xYmDNP.png"></img>
 			<div class="d2l-user-switcher-item-info">
-				<h2 class="d2l-user-switcher-item-name">Hannah Bond</h2>
+				<h2 class="d2l-user-switcher-item-name">{{_name}}</h2>
 				<p class="d2l-user-switcher-item-school">Tecumseh Public School</p>
 			</div>
 		</a>
@@ -55,14 +60,60 @@
 			is: 'd2l-user-switcher-item',
 
 			behaviors: [
-				window.D2L.PolymerBehaviors.MenuItemBehavior
+				window.D2L.PolymerBehaviors.MenuItemBehavior,
+				window.D2L.Hypermedia.HMConstantsBehavior
 			],
-
+			observers: [
+				'_onUserChange( userUrl, token )'
+			],
 			properties: {
 				token: String,
-				userUrl: String
-			}
+				userUrl: String,
+				_authorization: String,
+				_backgroundColor: String,
+				_backgroundUrl: String,
+				_enrollmentsUrl: String,
+				_headers: String,
+				_iconUrl: String,
+				_institutionUrl: String,
+				_name: String,
+				_organizationImageUrl: String,
+				_organizationsUrl: String,
+				_previousUserCall: Object,
+				_school: String,
+				_themeUrl: String
+			},
 
+			ready: function() {
+				this._generateUserRequest();
+			},
+			_onUserChange: function() {
+				this._generateUserRequest();
+			},
+
+			_generateUserRequest: function() {
+				this._previousUserCall = this._previousUserCall || {};
+				if (
+					this.userUrl &&
+					this.token &&
+					this.userUrl !== this._previousUserCall.userUrl &&
+					this.token !== this._previousUserCall.token
+				) {
+					this._previousUserCall = { userUrl: this.userUrl, token: this.token };
+					this._authorization = 'Bearer ' + this.token;
+					this._headers = {
+						Authorization: this._authorization,
+						Accept: 'application/vnd.siren+json'
+					};
+					this.$.userRequest.generateRequest();
+				}
+			},
+			_onUserResponse: function(response) {
+				if (response.detail.status === 200) {
+					var userResponse = window.D2L.Hypermedia.Siren.Parse(response.detail.xhr.response);
+					this._name = (userResponse.getSubEntityByRel(this.HypermediaRels.displayName) || { properties: {} }).properties.name;
+				}
+			}
 		});
 	</script>
 </dom-module>
