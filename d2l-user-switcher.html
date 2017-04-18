@@ -57,13 +57,13 @@
 		</style>
 
 		<d2l-dropdown>
-			<button class="d2l-dropdown-opener d2l-user-switcher-opener-container" aria-label="Switch user: Hannah Bond selected">
+			<button class="d2l-dropdown-opener d2l-user-switcher-opener-container" aria-label$="{{localize('switchUser', 'name', 'Hannah Bond')}}">
 				<img class="d2l-user-switcher-opener-image" src="http://i.imgur.com/1xYmDNP.png"></img>
 				<p class="d2l-user-switcher-opener-name">Hannah Bond</p>
 				<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
 			</button>
 			<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
-				<d2l-menu label="User Switcher menu">
+				<d2l-menu label="{{localize('userSwitcherMenu')}}">
 					<d2l-user-switcher-item></d2l-user-switcher-item>
 					<d2l-user-switcher-item></d2l-user-switcher-item>
 				</d2l-menu>
@@ -78,6 +78,7 @@
 			is: 'd2l-user-switcher',
 
 			behaviors: [
+				window.D2L.UserSwitcher.LocalizeBehavior
 			],
 
 			properties: {
