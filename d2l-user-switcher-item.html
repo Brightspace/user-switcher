@@ -6,6 +6,8 @@
 <link rel="import" href="../d2l-hm-constants-behavior/d2l-hm-constants-behavior.html">
 <link rel="import" href="../d2l-organization-hm-behavior/d2l-organization-hm-behavior.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../d2l-user-profile-behavior/d2l-user-profile-behavior.html">
+<link rel="import" href="../d2l-image/d2l-image.html">
 
 <dom-module id="d2l-user-switcher-item">
 	<template>
@@ -40,18 +42,24 @@
 				font-size: 16px;
 				line-height:  24px;
 			}
+
+			.user-tile-default-icon {
+				--d2l-icon-height: 100%;
+				--d2l-icon-width: 100%;
+			}
 		</style>
 
-		<iron-ajax id="enrollmentsRequest" url="[[_enrollmentsUrl]]" headers="[[_headers]]" on-iron-ajax-response="_onEnrollmentsResponse"></iron-ajax>
-		<iron-ajax id="institutionRequest" url="[[_institutionUrl]]" headers="[[_headers]]" on-iron-ajax-response="_onInstitutionResponse"></iron-ajax>
-		<iron-ajax id="organizationImageRequest" url="[[_organizationImageUrl]]" headers="[[_headers]]" on-iron-ajax-response="_onOrganizationImageResponse"></iron-ajax>
-		<iron-ajax id="organizationsRequest" url="[[_organizationsUrl]]" headers="[[_headers]]" on-iron-ajax-response="_onOrganizationsResponse"></iron-ajax>
-		<iron-ajax id="rootRequest" url="[[_rootUrl]]" headers="[[_headers]]" on-iron-ajax-response="_onRootResponse"></iron-ajax>
-		<iron-ajax id="userRequest" url="[[userUrl]]" headers="[[_headers]]" on-iron-ajax-response="_onUserResponse"></iron-ajax>
-		<iron-ajax id="themeRequest" url="[[_themeUrl]]" headers="[[_headers]]" on-iron-ajax-response="_onThemeResponse"></iron-ajax>
 
 		<a href="javascript:void(0);" class="d2l-user-switcher-item-link d2l-user-switcher-item-container" tabindex="-1">
-			<img class="d2l-user-switcher-item-image" src="http://i.imgur.com/1xYmDNP.png"></img>
+			<div class="d2l-user-switcher-item-image">
+				<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
+					<d2l-icon icon="d2l-tier1:profile-pic" class="user-tile-default-icon"></d2l-icon>
+				</template>
+				<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
+					<img src$="[[_iconUrl]]" hidden$="{{_hideCustomIcon(_iconUrl)}}" alt="" role="presentation" class="user-tile-avatar-image"/>
+					<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
+				</template>
+			</div>
 			<div class="d2l-user-switcher-item-info">
 				<h2 class="d2l-user-switcher-item-name">{{_name}}</h2>
 				<p class="d2l-user-switcher-item-school">{{_school}}</p>
@@ -67,141 +75,28 @@
 
 			behaviors: [
 				window.D2L.PolymerBehaviors.MenuItemBehavior,
-				window.D2L.Hypermedia.HMConstantsBehavior
+				window.D2L.Hypermedia.HMConstantsBehavior,
+				window.D2L.UserProfileBehavior
 			],
 			observers: [
 				'_onUserChange( userUrl, token )'
 			],
 			properties: {
-				token: String,
-				userUrl: String,
-				_authorization: String,
-				_backgroundColor: String,
-				_backgroundUrl: String,
-				_enrollmentsUrl: String,
-				_headers: String,
-				_iconUrl: String,
-				_institutionUrl: String,
-				_name: String,
-				_organizationImageUrl: String,
-				_organizationsUrl: String,
-				_previousUserCall: Object,
-				_school: String,
-				_themeUrl: String
+				token: {
+					type: String,
+					value: null
+				},
+				userUrl: String
 			},
 
 			ready: function() {
-				this._generateUserRequest();
+				this.generateUserRequest(this.userUrl, this.token);
 			},
 			_onUserChange: function() {
-				this._generateUserRequest();
+				this.generateUserRequest(this.userUrl, this.token);
 			},
-
-			_generateUserRequest: function() {
-				this._previousUserCall = this._previousUserCall || {};
-				if (
-					this.userUrl &&
-					this.token &&
-					this.userUrl !== this._previousUserCall.userUrl &&
-					this.token !== this._previousUserCall.token
-				) {
-					this._previousUserCall = { userUrl: this.userUrl, token: this.token };
-					this._authorization = 'Bearer ' + this.token;
-					this._headers = {
-						Authorization: this._authorization,
-						Accept: 'application/vnd.siren+json'
-					};
-					this.$.userRequest.generateRequest();
-				}
-			},
-			_onUserResponse: function(response) {
-				if (response.detail.status === 200) {
-					var userResponse = window.D2L.Hypermedia.Siren.Parse(response.detail.xhr.response);
-					this._name = (userResponse.getSubEntityByRel(this.HypermediaRels.displayName) || { properties: {} }).properties.name;
-					var profile = userResponse.getSubEntityByRel(this.HypermediaRels.userProfile);
-					if (profile) {
-						var image = profile.getSubEntityByRel(this.HypermediaRels.profileImage);
-						if (image.class.indexOf('default-image') > -1) {
-							this._iconUrl = null;
-						} else {
-							this._iconUrl = (image.getLinkByRel(this.HypermediaRels.thumbnailRegular) || {}).href;
-						}
-					}
-
-					this._rootUrl = (userResponse.getLinkByRel(this.HypermediaRels.root) || {}).href;
-					if (this._rootUrl) {
-						this.$.rootRequest.generateRequest();
-					}
-
-					this._enrollmentsUrl = (userResponse.getLinkByRel(this.HypermediaRels.myEnrollments) || {}).href;
-					if (this._enrollmentsUrl) {
-						this._enrollmentsUrl += '?pageSize=2&orgUnitTypeId=3&embedDepth=1';
-						this.$.enrollmentsRequest.generateRequest();
-					}
-				}
-			},
-			_onRootResponse: function(response) {
-				if (response.detail.status === 200) {
-					var rootResponse = window.D2L.Hypermedia.Siren.Parse(response.detail.xhr.response);
-					this._institutionUrl = (rootResponse.getLinkByRel(this.HypermediaRels.organization) || {}).href;
-
-					if (this._institutionUrl) {
-						this.$.institutionRequest.generateRequest();
-					}
-				}
-			},
-			_onEnrollmentsResponse: function(response) {
-				if (response.detail.status === 200) {
-					var enrollmentsResponse = window.D2L.Hypermedia.Siren.Parse(response.detail.xhr.response);
-					if (enrollmentsResponse.entities.length === 1) {
-						this._organizationsUrl = enrollmentsResponse.getSubEntityByRel(this.HypermediaRels.userEnrollment)
-							.getLinkByRel(this.HypermediaRels.organization).href;
-
-						this.$.organizationsRequest.generateRequest();
-					}
-				}
-			},
-			_onInstitutionResponse: function(response) {
-				if (response.detail.status === 200) {
-					var institutionResponse = window.D2L.Hypermedia.Siren.Parse(response.detail.xhr.response);
-					console.log(institutionResponse);
-					this._themeUrl = (institutionResponse.getLinkByRel('https://themes.api.brightspace.com/rels/theme') || {}).href;
-					if (institutionResponse.properties) {
-						this._school = institutionResponse.properties.name;
-					}
-
-					if (this._themeUrl) {
-						this.$.themeRequest.generateRequest();
-					}
-				}
-			},
-			_onOrganizationsResponse: function(response) {
-				if (response.detail.status === 200) {
-					var organizationsResponse = window.D2L.Hypermedia.Siren.Parse(response.detail.xhr.response);
-					var imageLink = organizationsResponse.getSubEntityByClass( this.HypermediaClasses.courseImage.courseImage);
-
-					if (imageLink) {
-						this._organizationImageUrl = imageLink.href;
-						this.$.organizationImageRequest.generateRequest();
-					}
-				}
-			},
-			_onOrganizationImageResponse: function(response) {
-				if (response.detail.status === 200) {
-					var organizationImageResponse = window.D2L.Hypermedia.Siren.Parse(response.detail.xhr.response);
-					var backgroundImages = this._getImageLinks(organizationImageResponse, this.HypermediaClasses.courseImage.wide);
-					this._backgroundUrl = backgroundImages.highMin || backgroundImages.lowMax;
-				}
-			},
-
-			_onThemeResponse: function(response) {
-				if (response.detail.status === 200) {
-					var theme = window.D2L.Hypermedia.Siren.Parse(response.detail.xhr.response);
-
-					if (theme.properties) {
-						this._backgroundColor = theme.properties.BackgroundColor;
-					}
-				}
+			_hideCustomIcon: function(icon) {
+				return !icon;
 			}
 		});
 	</script>

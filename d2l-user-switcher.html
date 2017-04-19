@@ -93,7 +93,6 @@
 				return window.D2L.Hypermedia.Siren.Parse(entity);
 			},
 			_getUserUrl: function(user) {
-				console.log('user: ', user)
 				var userEntity = this._parseEntity(user);
 				return (userEntity.getLinkByRel(this.HypermediaRels.user) || {}).href;
 			},
