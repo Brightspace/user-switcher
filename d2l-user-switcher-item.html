@@ -56,7 +56,6 @@
 					<d2l-icon icon="d2l-tier1:profile-pic" class="user-tile-default-icon"></d2l-icon>
 				</template>
 				<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
-					<img src$="[[_iconUrl]]" hidden$="{{_hideCustomIcon(_iconUrl)}}" alt="" role="presentation" class="user-tile-avatar-image"/>
 					<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
 				</template>
 			</div>

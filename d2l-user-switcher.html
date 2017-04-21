@@ -7,6 +7,7 @@
 <link rel="import" href="../d2l-menu/d2l-menu-item.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item-link.html">
 <link rel="import" href="./d2l-user-switcher-item.html">
+<link rel="import" href="../d2l-user-profile-behavior/d2l-user-profile-behavior.html">
 
 <dom-module id="d2l-user-switcher">
 	<template>
@@ -54,25 +55,40 @@
 			.d2l-user-switcher-opener-name {
 				height: 100%;
 			}
+			.user-tile-default-icon {
+				--d2l-icon-height: 100%;
+				--d2l-icon-width: 100%;
+			}
 		</style>
 
-		<d2l-dropdown>
-			<button class="d2l-dropdown-opener d2l-user-switcher-opener-container" aria-label="Switch user: Hannah Bond selected">
-				<img class="d2l-user-switcher-opener-image" src="http://i.imgur.com/1xYmDNP.png"></img>
-				<p class="d2l-user-switcher-opener-name">Hannah Bond</p>
-				<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
-			</button>
-			<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
-				<d2l-menu label="User Switcher menu">
-					<template is="dom-repeat" items="{{parentData.entities}}">
-						<d2l-user-switcher-item
-							user-url="{{_getUserUrl(item)}}"
-							token={{item.properties.token}}>
-						</d2l-user-switcher-item>
+		<template is="dom-if" if="{{!noUsers}}">
+			<d2l-dropdown>
+				<button class="d2l-user-switcher-opener-container d2l-dropdown-opener" aria-label="Switch user: Hannah Bond selected">
+					<div class="d2l-user-switcher-opener-image">
+						<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
+							<d2l-icon icon="d2l-tier1:profile-pic" class="user-tile-default-icon"></d2l-icon>
+						</template>
+						<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
+							<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
+						</template>
+					</div>
+					<p class="d2l-user-switcher-opener-name">{{_name}}</p>
+					<template is="dom-if" if="{{multipleUsers}}">
+						<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
 					</template>
-				</d2l-menu>
-			</d2l-dropdown-menu>
-		</d2l-dropdown>
+				</button>
+				<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
+					<d2l-menu label="User Switcher menu">
+						<template is="dom-repeat" items="{{parentData.entities}}">
+							<d2l-user-switcher-item
+								user-url="{{_getUserUrl(item)}}"
+								token={{item.properties.token}}>
+							</d2l-user-switcher-item>
+						</template>
+					</d2l-menu>
+				</d2l-dropdown-menu>
+			</d2l-dropdown>
+		</template>
 	</template>
 	<script src="https://s.brightspace.com/lib/ifrau/0.19.0/ifrau/client.js"></script>
 	<script>
@@ -82,12 +98,26 @@
 			is: 'd2l-user-switcher',
 
 			behaviors: [
-				window.D2L.Hypermedia.HMConstantsBehavior
+				window.D2L.Hypermedia.HMConstantsBehavior,
+				window.D2L.UserProfileBehavior
 			],
 
 			properties: {
-				parentData: Object
+				parentData: Object,
+				selectedUserId: {
+					type: String,
+					value: null
+				},
+				selectedUserIconUrl: {
+					type: String,
+					value: null
+				},
+				noUsers: true,
+				multipleUsers: false
 			},
+			observers: [
+				'_onSelectedUserChange( selectedUserId, parentData )'
+			],
 
 			_parseEntity: function(entity) {
 				return window.D2L.Hypermedia.Siren.Parse(entity);
@@ -98,6 +128,32 @@
 			},
 			close: function() {
 				this.$$('d2l-dropdown-menu').close();
+			},
+			_onSelectedUserChange: function() {
+				var self = this;
+				this.noUsers = this.multipleUsers = false;
+				var opener = this.$$('.d2l-user-switcher-opener-container');
+				if (this.parentData.entities.length > 1) {
+					self.toggleClass('d2l-dropdown-opener', true, opener);
+					this.multipleUsers = true;
+				} else {
+					self.toggleClass('d2l-dropdown-opener', false, opener);
+					this.noUsers = true;
+				}
+				if (this.parentData) {
+					this.parentData.entities.forEach(function(student) {
+						var studentEntity = self._parseEntity(student);
+						var studentLink = studentEntity.getLinkByRel('https://api.brightspace.com/rels/user')
+						var studentId = studentLink.href.match(/[0-9]+$/)[0];
+						if (studentId === self.selectedUserId) {
+							var userUrl = self._getUserUrl(student);
+							self.generateUserRequest(userUrl, student.properties.token);
+						}
+					});
+				}
+			},
+			_hideCustomIcon: function(icon) {
+				return !icon;
 			}
 
 		});
