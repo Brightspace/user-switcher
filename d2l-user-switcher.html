@@ -81,6 +81,7 @@
 					<d2l-menu label="User Switcher menu">
 						<template is="dom-repeat" items="{{parentData.entities}}">
 							<d2l-user-switcher-item
+								on-tap="_onTileClick"
 								user-url="{{_getUserUrl(item)}}"
 								token={{item.properties.token}}>
 							</d2l-user-switcher-item>
@@ -154,6 +155,10 @@
 			},
 			_hideCustomIcon: function(icon) {
 				return !icon;
+			},
+			_onTileClick: function(e) {
+				var data = e.model.item;
+				this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true }));
 			}
 
 		});
