@@ -159,6 +159,7 @@
 			_onTileClick: function(e) {
 				var data = e.model.item;
 				this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true }));
+				this.close();
 			}
 
 		});
