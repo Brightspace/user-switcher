@@ -8,6 +8,7 @@
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../d2l-user-profile-behavior/d2l-user-profile-behavior.html">
 <link rel="import" href="../d2l-image/d2l-image.html">
+<link rel="import" href="icons.html">
 
 <dom-module id="d2l-user-switcher-item">
 	<template>
@@ -53,7 +54,7 @@
 		<a href="javascript:void(0);" class="d2l-user-switcher-item-link d2l-user-switcher-item-container" tabindex="-1">
 			<div class="d2l-user-switcher-item-image">
 				<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
-					<d2l-icon icon="d2l-tier1:profile-pic" class="user-tile-default-icon"></d2l-icon>
+					<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
 				</template>
 				<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
 					<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>

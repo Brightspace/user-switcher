@@ -8,6 +8,7 @@
 <link rel="import" href="../d2l-menu/d2l-menu-item-link.html">
 <link rel="import" href="./d2l-user-switcher-item.html">
 <link rel="import" href="../d2l-user-profile-behavior/d2l-user-profile-behavior.html">
+<link rel="import" href="icons.html">
 
 <dom-module id="d2l-user-switcher">
 	<template>
@@ -66,7 +67,7 @@
 				<button class="d2l-user-switcher-opener-container d2l-dropdown-opener" aria-label="Switch user: Hannah Bond selected">
 					<div class="d2l-user-switcher-opener-image">
 						<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
-							<d2l-icon icon="d2l-tier1:profile-pic" class="user-tile-default-icon"></d2l-icon>
+							<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
 						</template>
 						<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
 							<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
@@ -144,7 +145,7 @@
 				if (this.parentData) {
 					this.parentData.entities.forEach(function(student) {
 						var studentEntity = self._parseEntity(student);
-						var studentLink = studentEntity.getLinkByRel('https://api.brightspace.com/rels/user')
+						var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user)
 						var studentId = studentLink.href.match(/[0-9]+$/)[0];
 						if (studentId === self.selectedUserId) {
 							var userUrl = self._getUserUrl(student);
