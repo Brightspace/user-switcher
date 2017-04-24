@@ -18,6 +18,7 @@
     "tests"
   ],
   "dependencies": {
+    "app-localize-behavior": "^1.0.2",
     "d2l-ajax": "^3.2.6",
     "d2l-colors": "^2.2.3",
     "d2l-dropdown": "^5.0.5",

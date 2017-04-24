@@ -9,6 +9,7 @@
 <link rel="import" href="./d2l-user-switcher-item.html">
 <link rel="import" href="../d2l-user-profile-behavior/d2l-user-profile-behavior.html">
 <link rel="import" href="icons.html">
+<link rel="import" href='./localize-behavior.html'>
 
 <dom-module id="d2l-user-switcher">
 	<template>
@@ -64,7 +65,7 @@
 
 		<template is="dom-if" if="{{!noUsers}}">
 			<d2l-dropdown>
-				<button class="d2l-user-switcher-opener-container d2l-dropdown-opener" aria-label="Switch user: Hannah Bond selected">
+				<button class="d2l-user-switcher-opener-container d2l-dropdown-opener" aria-label$="{{localize('switchUser', 'name', 'Hannah Bond')}}">
 					<div class="d2l-user-switcher-opener-image">
 						<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
 							<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
@@ -79,7 +80,7 @@
 					</template>
 				</button>
 				<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
-					<d2l-menu label="User Switcher menu">
+					<d2l-menu label="{{localize('userSwitcherMenu')}}">
 						<template is="dom-repeat" items="{{parentData.entities}}">
 							<d2l-user-switcher-item
 								on-tap="_onTileClick"
@@ -101,7 +102,8 @@
 
 			behaviors: [
 				window.D2L.Hypermedia.HMConstantsBehavior,
-				window.D2L.UserProfileBehavior
+				window.D2L.UserProfileBehavior,
+				window.D2L.UserSwitcher.LocalizeBehavior
 			],
 
 			properties: {
@@ -135,6 +137,7 @@
 				var self = this;
 				this.noUsers = this.multipleUsers = false;
 				var opener = this.$$('.d2l-user-switcher-opener-container');
+				console.log(this.parentData.entities);
 				if (this.parentData.entities.length > 1) {
 					self.toggleClass('d2l-dropdown-opener', true, opener);
 					this.multipleUsers = true;
