@@ -65,7 +65,7 @@
 
 		<template is="dom-if" if="{{!noUsers}}">
 			<d2l-dropdown>
-				<button class="d2l-user-switcher-opener-container d2l-dropdown-opener" aria-label$="{{localize('switchUser', 'name', 'Hannah Bond')}}">
+				<button class="d2l-user-switcher-opener-container d2l-dropdown-opener" aria-label$="{{localize('switchUser', 'name', _name)}}">
 					<div class="d2l-user-switcher-opener-image">
 						<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
 							<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
