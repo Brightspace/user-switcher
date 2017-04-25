@@ -3,6 +3,12 @@
 <link rel="import" href="../d2l-menu/d2l-menu-item-behavior.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item-styles.html">
 <link rel="import" href="../d2l-colors/d2l-colors.html">
+<link rel="import" href="../d2l-hm-constants-behavior/d2l-hm-constants-behavior.html">
+<link rel="import" href="../d2l-organization-hm-behavior/d2l-organization-hm-behavior.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../d2l-user-profile-behavior/d2l-user-profile-behavior.html">
+<link rel="import" href="../d2l-image/d2l-image.html">
+<link rel="import" href="icons.html">
 
 <dom-module id="d2l-user-switcher-item">
 	<template>
@@ -37,13 +43,26 @@
 				font-size: 16px;
 				line-height:  24px;
 			}
+
+			.user-tile-default-icon {
+				--d2l-icon-height: 100%;
+				--d2l-icon-width: 100%;
+			}
 		</style>
 
+
 		<a href="javascript:void(0);" class="d2l-user-switcher-item-link d2l-user-switcher-item-container" tabindex="-1">
-			<img class="d2l-user-switcher-item-image" src="http://i.imgur.com/1xYmDNP.png"></img>
+			<div class="d2l-user-switcher-item-image">
+				<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
+					<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
+				</template>
+				<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
+					<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
+				</template>
+			</div>
 			<div class="d2l-user-switcher-item-info">
-				<h2 class="d2l-user-switcher-item-name">Hannah Bond</h2>
-				<p class="d2l-user-switcher-item-school">Tecumseh Public School</p>
+				<h2 class="d2l-user-switcher-item-name">{{_name}}</h2>
+				<p class="d2l-user-switcher-item-school">{{_school}}</p>
 			</div>
 		</a>
 	</template>
@@ -55,12 +74,27 @@
 			is: 'd2l-user-switcher-item',
 
 			behaviors: [
-				window.D2L.PolymerBehaviors.MenuItemBehavior
+				window.D2L.PolymerBehaviors.MenuItemBehavior,
+				window.D2L.Hypermedia.HMConstantsBehavior,
+				window.D2L.UserProfileBehavior
 			],
-
+			observers: [
+				'_onUserChange( userUrl, token )'
+			],
 			properties: {
-			}
+				token: {
+					type: String,
+					value: null
+				},
+				userUrl: String
+			},
 
+			_onUserChange: function() {
+				this.generateUserRequest(this.userUrl, this.token);
+			},
+			_hideCustomIcon: function(icon) {
+				return !icon;
+			}
 		});
 	</script>
 </dom-module>
