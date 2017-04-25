@@ -135,7 +135,8 @@
 			},
 			_onSelectedUserChange: function() {
 				var self = this;
-				this.noUsers = this.multipleUsers = false;
+				this.noUsers = false;
+				this.multipleUsers = false;
 				var opener = this.$$('.d2l-user-switcher-opener-container');
 				if (this.parentData.entities.length > 1) {
 					self.toggleClass('d2l-dropdown-opener', true, opener);
