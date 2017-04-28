@@ -140,7 +140,7 @@
 				this.noUsers = false;
 				this.multipleUsers = false;
 				var opener = this.$$('.d2l-user-switcher-opener-container');
-				if (this.parentData.entities.length > 1) {
+				if (this.parentData && this.parentData.entities && this.parentData.entities.length > 1) {
 					self.toggleClass('d2l-dropdown-opener', true, opener);
 					this.multipleUsers = true;
 				} else {
@@ -164,14 +164,14 @@
 			},
 			_onItemClick: function(e) {
 				var data = e.model.item;
-				this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true }));
 				this.close();
+				this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true }));
 			},
 			_onItemKeydown: function(e) {
 				if (e.keyCode === 13 || e.keyCode === 32) {
 					var data = e.model.item;
-					this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true }));
 					this.close();
+					this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true }));
 				}
 			}
 
