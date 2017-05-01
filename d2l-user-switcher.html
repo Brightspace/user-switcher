@@ -64,7 +64,7 @@
 			}
 		</style>
 
-		<template is="dom-if" if="{{!noUsers}}">
+		<template is="dom-if" if="{{hasUsers}}">
 			<d2l-dropdown>
 				<button class="d2l-user-switcher-opener-container d2l-dropdown-opener" aria-label$="{{localize('switchUser', 'name', _name)}}">
 					<div class="d2l-user-switcher-opener-image">
@@ -118,7 +118,7 @@
 					type: String,
 					value: null
 				},
-				noUsers: true,
+				hasUsers: false,
 				multipleUsers: false
 			},
 			observers: [
@@ -136,28 +136,32 @@
 				this.$$('d2l-dropdown-menu').close();
 			},
 			_onSelectedUserChange: function() {
+				if (!this.parentData || !this.parentData.entities) {
+					this.hasUsers = false;
+					return;
+				}
+
 				var self = this;
-				this.noUsers = false;
+				this.hasUsers = true;
 				this.multipleUsers = false;
+
 				var opener = this.$$('.d2l-user-switcher-opener-container');
-				if (this.parentData && this.parentData.entities && this.parentData.entities.length > 1) {
+				if (this.parentData.entities.length > 1) {
 					self.toggleClass('d2l-dropdown-opener', true, opener);
 					this.multipleUsers = true;
 				} else {
 					self.toggleClass('d2l-dropdown-opener', false, opener);
-					this.noUsers = true;
 				}
-				if (this.parentData) {
-					this.parentData.entities.forEach(function(student) {
-						var studentEntity = self._parseEntity(student);
-						var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user)
-						var studentId = studentLink.href.match(/[0-9]+$/)[0];
-						if (studentId === self.selectedUserId) {
-							var userUrl = self._getUserUrl(student);
-							self.generateUserRequest(userUrl, student.properties.token);
-						}
-					});
-				}
+
+				this.parentData.entities.forEach(function(student) {
+					var studentEntity = self._parseEntity(student);
+					var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user)
+					var studentId = studentLink.href.match(/[0-9]+$/)[0];
+					if (studentId === self.selectedUserId) {
+						var userUrl = self._getUserUrl(student);
+						self.generateUserRequest(userUrl, student.properties.token);
+					}
+				});
 			},
 			_hideCustomIcon: function(icon) {
 				return !icon;
