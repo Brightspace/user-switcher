@@ -22,13 +22,15 @@
 				background: none;
 				border: none;
 				outline: none;
-				cursor: pointer;
 				font-family: inherit;
 				font-size: inherit;
 				font-weight: inherit;
 				letter-spacing: inherit;
 				line-height: inherit;
 				color: inherit;
+			}
+			.pointer {
+				cursor: pointer;
 			}
 			button:focus > d2l-icon,
 			button:hover > d2l-icon,
@@ -65,8 +67,8 @@
 		</style>
 
 		<template is="dom-if" if="{{hasUsers}}">
-			<d2l-dropdown>
-				<button class="d2l-user-switcher-opener-container d2l-dropdown-opener" aria-label$="{{localize('switchUser', 'name', _name)}}">
+			<template is="dom-if" if="{{!multipleUsers}}">
+				<div class="d2l-user-switcher-opener-container">
 					<div class="d2l-user-switcher-opener-image">
 						<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
 							<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
@@ -76,23 +78,38 @@
 						</template>
 					</div>
 					<p class="d2l-user-switcher-opener-name">{{_name}}</p>
-					<template is="dom-if" if="{{multipleUsers}}">
-						<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
-					</template>
-				</button>
-				<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
-					<d2l-menu label="{{localize('userSwitcherMenu')}}">
-						<template is="dom-repeat" items="{{parentData.entities}}">
-							<d2l-user-switcher-item
-								on-tap="_onItemClick"
-								on-keydown="_onItemKeydown"
-								user-url="{{_getUserUrl(item)}}"
-								token={{item.properties.token}}>
-							</d2l-user-switcher-item>
+				</div>
+			</template>
+			<template is="dom-if" if="{{multipleUsers}}">
+				<d2l-dropdown>
+					<button class="d2l-user-switcher-opener-container d2l-dropdown-opener pointer" aria-label$="{{localize('switchUser', 'name', _name)}}">
+						<div class="d2l-user-switcher-opener-image">
+							<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
+								<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
+							</template>
+							<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
+								<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
+							</template>
+						</div>
+						<p class="d2l-user-switcher-opener-name">{{_name}}</p>
+						<template is="dom-if" if="{{multipleUsers}}">
+							<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
 						</template>
-					</d2l-menu>
-				</d2l-dropdown-menu>
-			</d2l-dropdown>
+					</button>
+					<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
+						<d2l-menu label="{{localize('userSwitcherMenu')}}">
+							<template is="dom-repeat" items="{{parentData.entities}}">
+								<d2l-user-switcher-item
+									on-tap="_onItemClick"
+									on-keydown="_onItemKeydown"
+									user-url="{{_getUserUrl(item)}}"
+									token={{item.properties.token}}>
+								</d2l-user-switcher-item>
+							</template>
+						</d2l-menu>
+					</d2l-dropdown-menu>
+				</d2l-dropdown>
+			</template>
 		</template>
 	</template>
 	<script src="https://s.brightspace.com/lib/ifrau/0.19.0/ifrau/client.js"></script>
@@ -145,12 +162,8 @@
 				this.hasUsers = true;
 				this.multipleUsers = false;
 
-				var opener = this.$$('.d2l-user-switcher-opener-container');
 				if (this.parentData.entities.length > 1) {
-					self.toggleClass('d2l-dropdown-opener', true, opener);
 					this.multipleUsers = true;
-				} else {
-					self.toggleClass('d2l-dropdown-opener', false, opener);
 				}
 
 				this.parentData.entities.forEach(function(student) {
