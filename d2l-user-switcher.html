@@ -83,7 +83,7 @@
 			</template>
 			<template is="dom-if" if="{{multipleUsers}}">
 				<d2l-dropdown>
-					<button class="d2l-user-switcher-opener-container d2l-dropdown-opener pointer" aria-label$="{{localize('switchUser', 'name', _name)}}">
+					<button class="d2l-user-switcher-opener-container pointer d2l-dropdown-opener" aria-label$="{{localize('switchUser', 'name', _name)}}">
 						<div class="d2l-user-switcher-opener-image">
 							<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
 								<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
@@ -142,6 +142,9 @@
 			observers: [
 				'_onSelectedUserChange( selectedUserId, parentData )'
 			],
+			listeners: {
+				'd2l-dropdown-open': 'onOpen'
+			},
 
 			_parseEntity: function(entity) {
 				return window.D2L.Hypermedia.Siren.Parse(entity);
@@ -152,6 +155,12 @@
 			},
 			close: function() {
 				this.$$('d2l-dropdown-menu').close();
+			},
+			onOpen: function(e) {
+				var self = this;
+				setTimeout(function() {
+					self.$$('d2l-menu').focus();
+				}, 0);
 			},
 			_onSelectedUserChange: function() {
 				if (!this.parentData || !this.parentData.entities) {
