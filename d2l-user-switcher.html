@@ -6,10 +6,10 @@
 <link rel="import" href="../d2l-menu/d2l-menu.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item-link.html">
-<link rel="import" href="./d2l-user-switcher-item.html">
 <link rel="import" href="../d2l-user-profile-behavior/d2l-user-profile-behavior.html">
-<link rel="import" href="icons.html">
+<link rel="import" href="./d2l-user-switcher-item.html">
 <link rel="import" href='./localize-behavior.html'>
+<link rel="import" href="icons.html">
 
 <dom-module id="d2l-user-switcher">
 	<template>
@@ -71,44 +71,44 @@
 			}
 		</style>
 
-		<template is="dom-if" if="{{hasUsers}}">
-			<template is="dom-if" if="{{!multipleUsers}}">
+		<template is="dom-if" if="[[hasUsers]]">
+			<template is="dom-if" if="[[!multipleUsers]]">
 				<div class="d2l-user-switcher-opener-container">
 					<div class="d2l-user-switcher-opener-image">
-						<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
+						<template is="dom-if" if="[[_hideCustomIcon(_iconUrl)]]">
 							<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
 						</template>
-						<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
+						<template is="dom-if" if="[[!_hideCustomIcon(_iconUrl)]]">
 							<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
 						</template>
 					</div>
-					<p class="d2l-user-switcher-opener-name">{{_name}}</p>
+					<p class="d2l-user-switcher-opener-name">[[_name]]</p>
 				</div>
 			</template>
-			<template is="dom-if" if="{{multipleUsers}}">
+			<template is="dom-if" if="[[multipleUsers]]">
 				<d2l-dropdown>
-					<button class="d2l-user-switcher-opener-container pointer d2l-dropdown-opener" aria-label$="{{localize('switchUser', 'name', _name)}}">
+					<button class="d2l-user-switcher-opener-container pointer d2l-dropdown-opener" aria-label$="[[localize('switchUser', 'name', _name)]]">
 						<div class="d2l-user-switcher-opener-image">
-							<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
+							<template is="dom-if" if="[[_hideCustomIcon(_iconUrl)]]">
 								<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
 							</template>
-							<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
+							<template is="dom-if" if="[[!_hideCustomIcon(_iconUrl)]]">
 								<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
 							</template>
 						</div>
-						<p class="d2l-user-switcher-opener-name">{{_name}}</p>
-						<template is="dom-if" if="{{multipleUsers}}">
+						<p class="d2l-user-switcher-opener-name">[[_name]]</p>
+						<template is="dom-if" if="[[multipleUsers]]">
 							<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
 						</template>
 					</button>
 					<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
-						<d2l-menu label="{{localize('userSwitcherMenu')}}">
-							<template is="dom-repeat" items="{{parentData.entities}}">
+						<d2l-menu label="[[localize('userSwitcherMenu')]]">
+							<template is="dom-repeat" items="[[parentData.entities]]">
 								<d2l-user-switcher-item
 									on-tap="_onItemClick"
 									on-keydown="_onItemKeydown"
-									user-url="{{_getUserUrl(item)}}"
-									token={{item.properties.token}}>
+									user-url="[[_getUserUrl(item)]]"
+									token=[[item.properties.token]]>
 								</d2l-user-switcher-item>
 							</template>
 						</d2l-menu>
@@ -124,12 +124,6 @@
 		Polymer({
 			is: 'd2l-user-switcher',
 
-			behaviors: [
-				window.D2L.Hypermedia.HMConstantsBehavior,
-				window.D2L.UserProfileBehavior,
-				window.D2L.UserSwitcher.LocalizeBehavior
-			],
-
 			properties: {
 				parentData: Object,
 				selectedUserId: {
@@ -140,9 +134,20 @@
 					type: String,
 					value: null
 				},
-				hasUsers: false,
-				multipleUsers: false
+				hasUsers: {
+					type: Boolean,
+					value: false
+				},
+				multipleUsers: {
+					type: Boolean,
+					value: false
+				}
 			},
+			behaviors: [
+				window.D2L.Hypermedia.HMConstantsBehavior,
+				window.D2L.UserProfileBehavior,
+				window.D2L.UserSwitcher.LocalizeBehavior
+			],
 			observers: [
 				'_onSelectedUserChange( selectedUserId, parentData )'
 			],
@@ -160,7 +165,7 @@
 			close: function() {
 				this.$$('d2l-dropdown-menu').close();
 			},
-			onOpen: function(e) {
+			onOpen: function() {
 				var self = this;
 				setTimeout(function() {
 					self.$$('d2l-menu').focus();
@@ -182,7 +187,7 @@
 
 				this.parentData.entities.forEach(function(student) {
 					var studentEntity = self._parseEntity(student);
-					var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user)
+					var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user);
 					var studentId = studentLink.href.match(/[0-9]+$/)[0];
 					if (studentId === self.selectedUserId) {
 						var userUrl = self._getUserUrl(student);

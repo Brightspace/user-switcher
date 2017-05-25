@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-icons/d2l-icons.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item-behavior.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item-styles.html">
 <link rel="import" href="../d2l-colors/d2l-colors.html">
@@ -54,16 +55,16 @@
 
 		<a href="javascript:void(0);" class="d2l-user-switcher-item-link d2l-user-switcher-item-container" tabindex="-1">
 			<div class="d2l-user-switcher-item-image">
-				<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
+				<template is="dom-if" if="[[_hideCustomIcon(_iconUrl)]]">
 					<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
 				</template>
-				<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
+				<template is="dom-if" if="[[!_hideCustomIcon(_iconUrl)]]">
 					<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
 				</template>
 			</div>
 			<div class="d2l-user-switcher-item-info">
-				<p class="d2l-user-switcher-item-name">{{_name}}</p>
-				<p class="d2l-user-switcher-item-school">{{_school}}</p>
+				<p class="d2l-user-switcher-item-name">[[_name]]</p>
+				<p class="d2l-user-switcher-item-school">[[_school]]</p>
 			</div>
 		</a>
 	</template>
@@ -74,24 +75,28 @@
 		Polymer({
 			is: 'd2l-user-switcher-item',
 
-			behaviors: [
-				window.D2L.PolymerBehaviors.MenuItemBehavior,
-				window.D2L.UserProfileBehavior
-			],
-			observers: [
-				'_onUserChange( userUrl, token )'
-			],
 			properties: {
 				token: {
 					type: String,
 					value: null
-				},
-				userUrl: String
+				}
 			},
 
-			_onUserChange: function() {
-				this.generateUserRequest(this.userUrl, this.token);
+			behaviors: [
+				window.D2L.PolymerBehaviors.MenuItemBehavior,
+				window.D2L.UserProfileBehavior
+			],
+
+			observers: [
+				'_onUserChange( userUrl, token )'
+			],
+
+			_onUserChange: function(userUrl, token) {
+				if (userUrl && token) {
+					this.generateUserRequest(userUrl, token);
+				}
 			},
+
 			_hideCustomIcon: function(icon) {
 				return !icon;
 			}
