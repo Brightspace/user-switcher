@@ -183,7 +183,7 @@
 				this.parentData.entities.forEach(function(student) {
 					var studentEntity = self._parseEntity(student);
 					var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user)
-					var studentId = studentLink.href.match(/[0-9]+$/)[0];
+					var studentId = studentLink.href.match(/[0-9a-zA-Z]+$/)[0];
 					if (studentId === self.selectedUserId) {
 						var userUrl = self._getUserUrl(student);
 						self.generateUserRequest(userUrl, student.properties.token);
