@@ -1,0 +1,18 @@
+{
+  "entities": [{
+    "rel": ["https://api.brightspace.com/rels/display-name"],
+    "properties": {
+      "name": "Abe Lincoln"
+    }
+  }, {
+    "rel": ["https://api.brightspace.com/rels/user-profile"],
+    "entities": [{
+      "rel": ["https://api.brightspace.com/rels/profile-image"],
+      "class": [],
+      "links": [{
+        "rel": ["https://api.brightspace.com/rels/thumbnail#small"],
+        "href": "abe.jpg"
+      }]
+    }]
+  }]
+}

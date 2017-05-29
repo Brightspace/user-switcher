@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-colors/d2l-colors.html">
 <link rel="import" href="../d2l-dropdown/d2l-dropdown.html">
 <link rel="import" href="../d2l-dropdown/d2l-dropdown-menu.html">
 <link rel="import" href="../d2l-hm-constants-behavior/d2l-hm-constants-behavior.html">
@@ -14,11 +15,16 @@
 <dom-module id="d2l-user-switcher">
 	<template>
 		<style>
+			:host {
+				min-width: 200px;
+			}
 			d2l-dropdown {
 				display: block;
 			}
 			.d2l-user-switcher-opener-container {
 				display: flex;
+				flex-direction: row;
+				align-items: center;
 				background: none;
 				border: none;
 				outline: none;
@@ -28,7 +34,11 @@
 				letter-spacing: inherit;
 				line-height: inherit;
 				color: inherit;
-				padding-left: 0;
+				padding: 0;
+				height: 100%;
+			}
+			p {
+				margin: 0;
 			}
 			.pointer {
 				cursor: pointer;
@@ -40,14 +50,10 @@
 				text-decoration: underline;
 				color: var(--d2l-color-celestine);
 			}
-			.d2l-user-switcher-opener-container p, .d2l-user-switcher-opener-container img {
-				margin-top: auto;
-				margin-bottom: auto;
-			}
 			.d2l-user-switcher-opener-image {
 				max-width: 35px;
 				max-height: 35px;
-				margin: 10px 10px 10px 0;
+				margin-right: 10px;
 				border-radius: 6px;
 				overflow: hidden;
 			}
@@ -62,44 +68,54 @@
 				width: 15px;
 				height: 15px;
 			}
-			.d2l-user-switcher-opener-name {
-				height: 100%;
-			}
 			.user-tile-default-icon {
 				--d2l-icon-height: 100%;
 				--d2l-icon-width: 100%;
+			}
+			.text-placeholder {
+				width: 150px;
+				background: var(--d2l-color-titanius);
+			}
+			[hidden] {
+				display: none;
 			}
 		</style>
 
 		<template is="dom-if" if="[[hasUsers]]">
 			<template is="dom-if" if="[[!multipleUsers]]">
 				<div class="d2l-user-switcher-opener-container">
-					<div class="d2l-user-switcher-opener-image">
-						<template is="dom-if" if="[[_hideCustomIcon(_iconUrl)]]">
-							<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
-						</template>
-						<template is="dom-if" if="[[!_hideCustomIcon(_iconUrl)]]">
-							<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
-						</template>
-					</div>
-					<p class="d2l-user-switcher-opener-name">[[_name]]</p>
+					<d2l-icon
+						hidden$="[[_hidePlaceholderIcon(_iconUrl)]]"
+						icon="navigation-48:profile"
+						class="user-tile-default-icon d2l-user-switcher-opener-image">
+					</d2l-icon>
+					<d2l-image
+						hidden$="[[!_hidePlaceholderIcon(_iconUrl)]]"
+						image-url="[[_iconUrl]]"
+						token="[[_token]]"
+						class="d2l-user-switcher-opener-image">
+					</d2l-image>
+					<p hidden$="[[_hidePlaceholderName(placeholders, _name)]]" class="text-placeholder">&nbsp;</p>
+					<p hidden$="[[!_hidePlaceholderName(placeholders, _name)]]">[[_name]]</p>
 				</div>
 			</template>
 			<template is="dom-if" if="[[multipleUsers]]">
 				<d2l-dropdown>
 					<button class="d2l-user-switcher-opener-container pointer d2l-dropdown-opener" aria-label$="[[localize('switchUser', 'name', _name)]]">
-						<div class="d2l-user-switcher-opener-image">
-							<template is="dom-if" if="[[_hideCustomIcon(_iconUrl)]]">
-								<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
-							</template>
-							<template is="dom-if" if="[[!_hideCustomIcon(_iconUrl)]]">
-								<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
-							</template>
-						</div>
-						<p class="d2l-user-switcher-opener-name">[[_name]]</p>
-						<template is="dom-if" if="[[multipleUsers]]">
-							<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
-						</template>
+						<d2l-icon
+							hidden$="[[_hidePlaceholderIcon(_iconUrl)]]"
+							icon="navigation-48:profile"
+							class="user-tile-default-icon d2l-user-switcher-opener-image">
+						</d2l-icon>
+						<d2l-image
+							hidden$="[[!_hidePlaceholderIcon(_iconUrl)]]"
+							image-url="[[_iconUrl]]"
+							token="[[_token]]"
+							class="d2l-user-switcher-opener-image">
+						</d2l-image>
+						<p hidden$="[[_hidePlaceholderName(placeholders, _name)]]" class="text-placeholder">&nbsp;</p>
+						<p hidden$="[[!_hidePlaceholderName(placeholders, _name)]]">[[_name]]</p>
+						<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
 					</button>
 					<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
 						<d2l-menu label="[[localize('userSwitcherMenu')]]">
@@ -126,6 +142,10 @@
 
 			properties: {
 				parentData: Object,
+				placeholders: {
+					type: Boolean,
+					value: false
+				},
 				selectedUserId: {
 					type: String,
 					value: null
@@ -141,6 +161,18 @@
 				multipleUsers: {
 					type: Boolean,
 					value: false
+				},
+				_token: {
+					type: String,
+					value: null
+				},
+				_iconUrl: {
+					type: String,
+					value: ''
+				},
+				_name: {
+					type: String,
+					value: null
 				}
 			},
 			behaviors: [
@@ -187,7 +219,7 @@
 
 				this.parentData.entities.forEach(function(student) {
 					var studentEntity = self._parseEntity(student);
-					var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user)
+					var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user);
 					var studentId = studentLink.href.match(/[0-9a-zA-Z]+$/)[0];
 					if (studentId === self.selectedUserId) {
 						var userUrl = self._getUserUrl(student);
@@ -195,8 +227,11 @@
 					}
 				});
 			},
-			_hideCustomIcon: function(icon) {
-				return !icon;
+			_hidePlaceholderName: function(placeholders, name) {
+				return !placeholders || !!name;
+			},
+			_hidePlaceholderIcon: function(icon) {
+				return !!icon;
 			},
 			_onItemClick: function(e) {
 				var data = e.model.item;

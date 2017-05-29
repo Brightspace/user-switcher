@@ -15,12 +15,14 @@
 			}
 			.d2l-user-switcher-item-container {
 				display: flex;
+				flex-direction: row;
+				align-items: center;
 				margin: 10px 30px;
 			}
 			.d2l-user-switcher-item-image {
 				max-width: 42px;
 				max-height: 42px;
-				margin-right:15px;
+				margin-right: 15px;
 				border-radius: 6px;
 				overflow: hidden;
 			}
@@ -28,12 +30,13 @@
 				margin-right: 0;
 				margin-left: 15px;
 			}
-			.d2l-user-switcher-item-info p, .d2l-user-switcher-item-info h2 {
-				text-decoration: none;
-				font-weight: normal;
+			.d2l-user-switcher-item-info {
+				display: flex;
+				flex-direction: column;
+				align-items: left;
 			}
 			.d2l-user-switcher-item-name {
-				margin: -3px 0 0 0;
+				margin: 0;
 				font-size: 19px;
 				line-height: 24px;
 				font-weight: normal;
@@ -43,25 +46,30 @@
 				color: var(--d2l-color-ferrite);
 				margin: 0;
 				font-size: 16px;
-				line-height:  24px;
+				line-height: 24px;
 			}
-
 			.user-tile-default-icon {
 				--d2l-icon-height: 100%;
 				--d2l-icon-width: 100%;
+			}
+			[hidden] {
+				display: none;
 			}
 		</style>
 
 
 		<a href="javascript:void(0);" class="d2l-user-switcher-item-link d2l-user-switcher-item-container" tabindex="-1">
-			<div class="d2l-user-switcher-item-image">
-				<template is="dom-if" if="[[_hideCustomIcon(_iconUrl)]]">
-					<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
-				</template>
-				<template is="dom-if" if="[[!_hideCustomIcon(_iconUrl)]]">
-					<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
-				</template>
-			</div>
+			<d2l-icon
+				hidden$="[[_hidePlaceholderIcon(_iconUrl)]]"
+				icon="navigation-48:profile"
+				class="user-tile-default-icon d2l-user-switcher-item-image">
+			</d2l-icon>
+			<d2l-image
+				hidden$="[[!_hidePlaceholderIcon(_iconUrl)]]"
+				image-url="[[_iconUrl]]"
+				token="[[token]]"
+				class="d2l-user-switcher-item-image">
+			</d2l-image>
 			<div class="d2l-user-switcher-item-info">
 				<p class="d2l-user-switcher-item-name">[[_name]]</p>
 				<p class="d2l-user-switcher-item-school">[[_school]]</p>
@@ -77,6 +85,14 @@
 
 			properties: {
 				token: {
+					type: String,
+					value: null
+				},
+				userUrl: {
+					type: String,
+					value: null
+				},
+				_iconUrl: {
 					type: String,
 					value: null
 				}
@@ -97,8 +113,8 @@
 				}
 			},
 
-			_hideCustomIcon: function(icon) {
-				return !icon;
+			_hidePlaceholderIcon: function(icon) {
+				return !!icon;
 			}
 		});
 	</script>
