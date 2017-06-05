@@ -1,0 +1,8 @@
+{
+  "entities": [{
+    "rel": ["https://api.brightspace.com/rels/display-name"],
+    "properties": {
+      "name": "Imageless User"
+    }
+  }]
+}

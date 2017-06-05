@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../d2l-colors/d2l-colors.html">
 <link rel="import" href="../d2l-dropdown/d2l-dropdown.html">
 <link rel="import" href="../d2l-dropdown/d2l-dropdown-menu.html">
 <link rel="import" href="../d2l-hm-constants-behavior/d2l-hm-constants-behavior.html">
@@ -6,10 +7,10 @@
 <link rel="import" href="../d2l-menu/d2l-menu.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item-link.html">
-<link rel="import" href="./d2l-user-switcher-item.html">
 <link rel="import" href="../d2l-user-profile-behavior/d2l-user-profile-behavior.html">
-<link rel="import" href="icons.html">
+<link rel="import" href="./d2l-user-switcher-item.html">
 <link rel="import" href='./localize-behavior.html'>
+<link rel="import" href="icons.html">
 
 <dom-module id="d2l-user-switcher">
 	<template>
@@ -19,6 +20,8 @@
 			}
 			.d2l-user-switcher-opener-container {
 				display: flex;
+				flex-direction: row;
+				align-items: center;
 				background: none;
 				border: none;
 				outline: none;
@@ -28,7 +31,11 @@
 				letter-spacing: inherit;
 				line-height: inherit;
 				color: inherit;
-				padding-left: 0;
+				padding: 0;
+				height: 100%;
+			}
+			p {
+				margin: 0;
 			}
 			.pointer {
 				cursor: pointer;
@@ -40,14 +47,10 @@
 				text-decoration: underline;
 				color: var(--d2l-color-celestine);
 			}
-			.d2l-user-switcher-opener-container p, .d2l-user-switcher-opener-container img {
-				margin-top: auto;
-				margin-bottom: auto;
-			}
 			.d2l-user-switcher-opener-image {
 				max-width: 35px;
 				max-height: 35px;
-				margin: 10px 10px 10px 0;
+				margin-right: 10px;
 				border-radius: 6px;
 				overflow: hidden;
 			}
@@ -62,53 +65,71 @@
 				width: 15px;
 				height: 15px;
 			}
-			.d2l-user-switcher-opener-name {
-				height: 100%;
-			}
 			.user-tile-default-icon {
 				--d2l-icon-height: 100%;
 				--d2l-icon-width: 100%;
 			}
+			.text-placeholder {
+				width: 150px;
+				background: var(--d2l-color-titanius);
+			}
+			[hidden] {
+				display: none;
+			}
+			d2l-icon,
+			d2l-image {
+				transition: opacity 250ms;
+			}
+			.opaque {
+				opacity: 1;
+			}
+			.transparent {
+				opacity: 0;
+			}
 		</style>
 
-		<template is="dom-if" if="{{hasUsers}}">
-			<template is="dom-if" if="{{!multipleUsers}}">
+		<template is="dom-if" if="[[hasUsers]]">
+			<template is="dom-if" if="[[!multipleUsers]]">
 				<div class="d2l-user-switcher-opener-container">
-					<div class="d2l-user-switcher-opener-image">
-						<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
-							<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
-						</template>
-						<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
-							<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
-						</template>
-					</div>
-					<p class="d2l-user-switcher-opener-name">{{_name}}</p>
+					<d2l-icon
+						icon="navigation-48:profile"
+						class="user-tile-default-icon d2l-user-switcher-opener-image opaque">
+					</d2l-icon>
+					<d2l-image
+						hidden
+						image-url="[[_iconUrl]]"
+						token="[[token]]"
+						class="d2l-user-switcher-opener-image transparent">
+					</d2l-image>
+					<p hidden$="[[!placeholders]]" class="text-placeholder">&nbsp;</p>
+					<p hidden$="[[placeholders]]">[[_name]]</p>
 				</div>
 			</template>
-			<template is="dom-if" if="{{multipleUsers}}">
+			<template is="dom-if" if="[[multipleUsers]]">
 				<d2l-dropdown>
-					<button class="d2l-user-switcher-opener-container pointer d2l-dropdown-opener" aria-label$="{{localize('switchUser', 'name', _name)}}">
-						<div class="d2l-user-switcher-opener-image">
-							<template is="dom-if" if="{{_hideCustomIcon(_iconUrl)}}">
-								<d2l-icon icon="navigation-48:profile" class="user-tile-default-icon"></d2l-icon>
-							</template>
-							<template is="dom-if" if="{{!_hideCustomIcon(_iconUrl)}}">
-								<d2l-image image-url="[[_iconUrl]]" token="[[token]]"></d2l-image>
-							</template>
-						</div>
-						<p class="d2l-user-switcher-opener-name">{{_name}}</p>
-						<template is="dom-if" if="{{multipleUsers}}">
-							<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
-						</template>
+					<button class="d2l-user-switcher-opener-container pointer d2l-dropdown-opener" aria-label$="[[localize('switchUser', 'name', _name)]]">
+						<d2l-icon
+							icon="navigation-48:profile"
+							class="user-tile-default-icon d2l-user-switcher-opener-image">
+						</d2l-icon>
+						<d2l-image
+							hidden
+							image-url="[[_iconUrl]]"
+							token="[[token]]"
+							class="d2l-user-switcher-opener-image">
+						</d2l-image>
+						<p hidden$="[[!placeholders]]" class="text-placeholder">&nbsp;</p>
+						<p hidden$="[[placeholders]]">[[_name]]</p>
+						<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
 					</button>
 					<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
-						<d2l-menu label="{{localize('userSwitcherMenu')}}">
-							<template is="dom-repeat" items="{{parentData.entities}}">
+						<d2l-menu label="[[localize('userSwitcherMenu')]]">
+							<template is="dom-repeat" items="[[parentData.entities]]">
 								<d2l-user-switcher-item
 									on-tap="_onItemClick"
 									on-keydown="_onItemKeydown"
-									user-url="{{_getUserUrl(item)}}"
-									token={{item.properties.token}}>
+									user-url="[[_getUserUrl(item)]]"
+									token=[[item.properties.token]]>
 								</d2l-user-switcher-item>
 							</template>
 						</d2l-menu>
@@ -124,14 +145,12 @@
 		Polymer({
 			is: 'd2l-user-switcher',
 
-			behaviors: [
-				window.D2L.Hypermedia.HMConstantsBehavior,
-				window.D2L.UserProfileBehavior,
-				window.D2L.UserSwitcher.LocalizeBehavior
-			],
-
 			properties: {
 				parentData: Object,
+				placeholders: {
+					type: Boolean,
+					value: false
+				},
 				selectedUserId: {
 					type: String,
 					value: null
@@ -140,12 +159,40 @@
 					type: String,
 					value: null
 				},
-				hasUsers: false,
-				multipleUsers: false
+				hasUsers: {
+					type: Boolean,
+					value: false
+				},
+				multipleUsers: {
+					type: Boolean,
+					value: false
+				},
+				token: {
+					type: String,
+					value: null
+				},
+				_iconUrl: {
+					type: String,
+					value: '',
+					observer: '_onIconUrlChanged'
+				},
+				_name: {
+					type: String,
+					value: null,
+					observer: '_onNameChanged'
+				}
 			},
-			observers: [
-				'_onSelectedUserChange( selectedUserId, parentData )'
+
+			behaviors: [
+				window.D2L.Hypermedia.HMConstantsBehavior,
+				window.D2L.UserProfileBehavior,
+				window.D2L.UserSwitcher.LocalizeBehavior
 			],
+
+			observers: [
+				'_onSelectedUserChanged(selectedUserId, parentData)'
+			],
+
 			listeners: {
 				'd2l-dropdown-open': 'onOpen'
 			},
@@ -153,20 +200,50 @@
 			_parseEntity: function(entity) {
 				return window.D2L.Hypermedia.Siren.Parse(entity);
 			},
+
 			_getUserUrl: function(user) {
 				var userEntity = this._parseEntity(user);
 				return (userEntity.getLinkByRel(this.HypermediaRels.user) || {}).href;
 			},
+
 			close: function() {
 				this.$$('d2l-dropdown-menu').close();
 			},
-			onOpen: function(e) {
+
+			onOpen: function() {
 				var self = this;
 				setTimeout(function() {
 					self.$$('d2l-menu').focus();
 				}, 0);
 			},
-			_onSelectedUserChange: function() {
+
+			_onIconUrlChanged: function(iconUrl) {
+				if (iconUrl) {
+					var icon = this.multipleUsers ? this.$$('d2l-dropdown d2l-icon') : this.$$('d2l-icon');
+					var image = this.multipleUsers ? this.$$('d2l-dropdown d2l-image') : this.$$('d2l-image');
+
+					icon.toggleClass('transparent', true);
+					setTimeout(function() {
+						icon.setAttribute('hidden', true);
+						image.removeAttribute('hidden');
+					}, 250);
+					setTimeout(function() {
+						image.toggleClass('transparent', false);
+					}, 300);
+				}
+			},
+
+			_onNameChanged: function(name) {
+				if (name) {
+					var textPlaceholder = this.multipleUsers ? this.$$('d2l-dropdown p.text-placeholder') : this.$$('p.text-placeholder');
+					var text = this.multipleUsers ? this.$$('d2l-dropdown p:not(.text-placeholder)') : this.$$('p:not(.text-placeholder)');
+
+					textPlaceholder.setAttribute('hidden', true);
+					text.removeAttribute('hidden');
+				}
+			},
+
+			_onSelectedUserChanged: function() {
 				if (!this.parentData || !this.parentData.entities) {
 					this.hasUsers = false;
 					return;
@@ -182,7 +259,7 @@
 
 				this.parentData.entities.forEach(function(student) {
 					var studentEntity = self._parseEntity(student);
-					var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user)
+					var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user);
 					var studentId = studentLink.href.match(/[0-9a-zA-Z]+$/)[0];
 					if (studentId === self.selectedUserId) {
 						var userUrl = self._getUserUrl(student);
@@ -190,14 +267,13 @@
 					}
 				});
 			},
-			_hideCustomIcon: function(icon) {
-				return !icon;
-			},
+
 			_onItemClick: function(e) {
 				var data = e.model.item;
 				this.close();
 				this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true }));
 			},
+
 			_onItemKeydown: function(e) {
 				if (e.keyCode === 13 || e.keyCode === 32) {
 					var data = e.model.item;
@@ -205,7 +281,6 @@
 					this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true }));
 				}
 			}
-
 		});
 	</script>
 </dom-module>

@@ -1,0 +1,84 @@
+<head>
+	<script src="https://s.brightspace.com/lib/webcomponentsjs/0.7.21/webcomponents.min.js"></script>
+	<link rel="import" href="../../d2l-demo-template/d2l-demo-template.html">
+	<link rel="import" href="../d2l-user-switcher.html">
+	<style>
+		.d2l-demo-fixture {
+			display: flex;
+			flex-direction: column;
+			flex-wrap: wrap;
+		}
+		d2l-user-switcher {
+			height: 50px;
+			width: 300px;
+			margin-bottom: 20px;
+		}
+	</style>
+</head>
+<body>
+	<d2l-demo-template title="d2l-user-switcher">
+		<div class="d2l-demo-fixture">
+			<d2l-user-switcher id="no-placeholder"></d2l-user-switcher>
+			<d2l-user-switcher id="placeholder" placeholders></d2l-user-switcher>
+			<d2l-user-switcher id="multi-user" placeholders></d2l-user-switcher>
+		</div>
+	</d2l-demo-template>
+
+	<script>
+		'use strict';
+
+		var placeholderSwitcher = document.getElementById('placeholder');
+		placeholderSwitcher.hasUsers = true;
+		var noPlaceholderSwitcher = document.getElementById('no-placeholder');
+		noPlaceholderSwitcher.hasUsers = true;
+		var multiUserSwitcher = document.getElementById('multi-user');
+		multiUserSwitcher.hasUsers = true;
+
+		setTimeout(function() {
+			placeholderSwitcher.parentData = {
+				entities: [{
+					rel: ['foo'],
+					properties: { token: 'foo' },
+					links: [{
+						rel: ['https://api.brightspace.com/rels/user'],
+						href: 'user1.json'
+					}]
+				}]
+			};
+			noPlaceholderSwitcher.parentData = {
+				entities: [{
+					rel: ['foo'],
+					properties: { token: 'foo' },
+					links: [{
+						rel: ['https://api.brightspace.com/rels/user'],
+						href: 'user1.json'
+					}]
+				}]
+			};
+			multiUserSwitcher.parentData = {
+				entities: [{
+					rel: ['foo'],
+					properties: { token: 'foo' },
+					links: [{
+						rel: ['https://api.brightspace.com/rels/user'],
+						href: 'user1.json'
+					}]
+				}, {
+					rel: ['foo'],
+					properties: { token: 'foo' },
+					links: [{
+						rel: ['https://api.brightspace.com/rels/user'],
+						href: 'user2.json'
+					}]
+				}, {
+					rel: ['foo'],
+					properties: { token: 'foo' },
+					links: [{
+						rel: ['https://api.brightspace.com/rels/user'],
+						href: 'user3.json'
+					}]
+				}]
+			};
+		}, 1000);
+	</script>
+</body>
