@@ -30,5 +30,8 @@
   },
   "devDependencies": {
     "d2l-demo-template": "^0.0.12"
+  },
+  "resolutions": {
+    "d2l-icons": "^4.0.0"
   }
 }
