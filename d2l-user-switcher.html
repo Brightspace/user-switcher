@@ -10,7 +10,6 @@
 <link rel="import" href="../d2l-user-profile-behavior/d2l-user-profile-behavior.html">
 <link rel="import" href="./d2l-user-switcher-item.html">
 <link rel="import" href='./localize-behavior.html'>
-<link rel="import" href="icons.html">
 
 <dom-module id="d2l-user-switcher">
 	<template>
@@ -92,7 +91,7 @@
 			<template is="dom-if" if="[[!multipleUsers]]">
 				<div class="d2l-user-switcher-opener-container">
 					<d2l-icon
-						icon="navigation-48:profile"
+						icon="d2l-tier3:profile-pic"
 						class="user-tile-default-icon d2l-user-switcher-opener-image opaque">
 					</d2l-icon>
 					<d2l-image
@@ -109,7 +108,7 @@
 				<d2l-dropdown>
 					<button class="d2l-user-switcher-opener-container pointer d2l-dropdown-opener" aria-label$="[[localize('switchUser', 'name', _name)]]">
 						<d2l-icon
-							icon="navigation-48:profile"
+							icon="d2l-tier3:profile-pic"
 							class="user-tile-default-icon d2l-user-switcher-opener-image">
 						</d2l-icon>
 						<d2l-image
