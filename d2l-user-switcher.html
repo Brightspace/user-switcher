@@ -217,10 +217,10 @@
 			},
 
 			_onIconUrlChanged: function(iconUrl) {
-				if (iconUrl) {
-					var icon = this.multipleUsers ? this.$$('d2l-dropdown d2l-icon') : this.$$('d2l-icon');
-					var image = this.multipleUsers ? this.$$('d2l-dropdown d2l-image') : this.$$('d2l-image');
+				var icon = this.multipleUsers ? this.$$('d2l-dropdown d2l-icon') : this.$$('d2l-icon');
+				var image = this.multipleUsers ? this.$$('d2l-dropdown d2l-image') : this.$$('d2l-image');
 
+				if (iconUrl) {
 					icon.toggleClass('transparent', true);
 					setTimeout(function() {
 						icon.setAttribute('hidden', true);
@@ -229,6 +229,10 @@
 					setTimeout(function() {
 						image.toggleClass('transparent', false);
 					}, 300);
+				} else if (icon && image) {
+					icon.removeAttribute('hidden');
+					icon.toggleClass('transparent', false);
+					image.setAttribute('hidden', true);
 				}
 			},
 
