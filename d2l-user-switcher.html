@@ -106,7 +106,7 @@
 			</template>
 			<template is="dom-if" if="[[multipleUsers]]">
 				<d2l-dropdown>
-					<button class="d2l-user-switcher-opener-container pointer d2l-dropdown-opener" aria-label$="[[localize('switchUser', 'name', _name)]]">
+					<button class="d2l-user-switcher-opener-container pointer d2l-dropdown-opener" on-mouseenter="_disableFocusOnClick" on-mouseleave="_enableFocusOnClick" aria-label$="[[localize('switchUser', 'name', _name)]]">
 						<d2l-icon
 							icon="d2l-tier3:profile-pic"
 							class="user-tile-default-icon d2l-user-switcher-opener-image">
@@ -179,6 +179,10 @@
 					type: String,
 					value: null,
 					observer: '_onNameChanged'
+				},
+				_focusOnClick: {
+					type: Boolean,
+					value: false
 				}
 			},
 
@@ -211,9 +215,20 @@
 
 			onOpen: function() {
 				var self = this;
-				setTimeout(function() {
-					self.$$('d2l-menu').focus();
-				}, 0);
+
+				if (self._focusOnClick) {
+					setTimeout(function() {
+						self.$$('d2l-menu').focus();
+					}, 0);
+				}
+			},
+
+			_disableFocusOnClick: function() {
+				this._focusOnClick = false;
+			},
+
+			_enableFocusOnClick: function() {
+				this._focusOnClick = true;
 			},
 
 			_onIconUrlChanged: function(iconUrl) {
