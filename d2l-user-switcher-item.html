@@ -76,15 +76,19 @@
 			is: 'd2l-user-switcher-item',
 
 			properties: {
-				token: {
-					type: String,
-					value: null
-				},
 				userUrl: {
 					type: String,
 					value: null
 				},
+				tokenGetter: {
+					type: Object,
+					value: null
+				},
 				_iconUrl: {
+					type: String,
+					value: null
+				},
+				token: {
 					type: String,
 					value: null
 				}
@@ -96,12 +100,17 @@
 			],
 
 			observers: [
-				'_onUserChange( userUrl, token )'
+				'_onUserChange( userUrl, tokenGetter )'
 			],
 
-			_onUserChange: function(userUrl, token) {
-				if (userUrl && token) {
-					this.generateUserRequest(userUrl, token);
+			_onUserChange: function(userUrl, tokenGetter) {
+				if (userUrl && tokenGetter && tokenGetter instanceof Function) {
+					var self = this;
+					tokenGetter(userUrl)
+						.then(function(token) {
+							self.generateUserRequest(userUrl, token);
+						});
+					// catch?
 				}
 			},
 

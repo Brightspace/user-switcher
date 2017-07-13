@@ -128,7 +128,7 @@
 									on-tap="_onItemClick"
 									on-keydown="_onItemKeydown"
 									user-url="[[_getUserUrl(item)]]"
-									token=[[item.properties.token]]>
+									token-getter=[[tokenGetter]]>
 								</d2l-user-switcher-item>
 							</template>
 						</d2l-menu>
@@ -170,6 +170,10 @@
 					type: String,
 					value: null
 				},
+				tokenGetter: {
+					type: Object,
+					value: null
+				},
 				_iconUrl: {
 					type: String,
 					value: '',
@@ -189,7 +193,7 @@
 			],
 
 			observers: [
-				'_onSelectedUserChanged(selectedUserId, parentData)'
+				'_onSelectedUserChanged(selectedUserId, parentData, tokenGetter)'
 			],
 
 			listeners: {
@@ -247,7 +251,8 @@
 			},
 
 			_onSelectedUserChanged: function() {
-				if (!this.parentData || !this.parentData.entities) {
+				if (!this.parentData || !this.parentData.entities ||
+					!this.tokenGetter || this.tokenGetter instanceof Function) {
 					this.hasUsers = false;
 					return;
 				}
@@ -266,7 +271,11 @@
 					var studentId = studentLink.href.match(/[0-9a-zA-Z]+$/)[0];
 					if (studentId === self.selectedUserId) {
 						var userUrl = self._getUserUrl(student);
-						self.generateUserRequest(userUrl, student.properties.token);
+						self.tokenGetter(userUrl)
+							.then(function(token) {
+								self.generateUserRequest(userUrl, token);
+							});
+							// catch?
 					}
 				});
 			},
