@@ -84,11 +84,11 @@
 					type: Object,
 					value: null
 				},
-				_iconUrl: {
+				token: {
 					type: String,
 					value: null
 				},
-				token: {
+				_iconUrl: {
 					type: String,
 					value: null
 				}
@@ -104,12 +104,16 @@
 			],
 
 			_onUserChange: function(userUrl, tokenGetter) {
-				if (userUrl && tokenGetter && tokenGetter instanceof Function) {
+				if (userUrl && tokenGetter && typeof tokenGetter === 'function') {
 					var self = this;
 					tokenGetter(userUrl)
 						.then(function(token) {
 							self.generateUserRequest(userUrl, token);
-						});
+						})
+						.catch(function(e) {
+							self.userUrl = null;
+							self.token = null;
+						})
 				}
 			},
 

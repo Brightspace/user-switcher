@@ -252,7 +252,7 @@
 
 			_onSelectedUserChanged: function() {
 				if (!this.parentData || !this.parentData.entities ||
-					!this.tokenGetter || this.tokenGetter instanceof Function) {
+					!this.tokenGetter || typeof this.tokenGetter !== 'function') {
 					this.hasUsers = false;
 					return;
 				}
@@ -274,6 +274,11 @@
 						self.tokenGetter(userUrl)
 							.then(function(token) {
 								self.generateUserRequest(userUrl, token);
+							})
+							.catch(function() {
+								self.token = null;
+								self.parentData = null;
+								self.selectedUserId = null;
 							});
 					}
 				});
