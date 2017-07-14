@@ -110,10 +110,10 @@
 						.then(function(token) {
 							self.generateUserRequest(userUrl, token);
 						})
-						.catch(function(e) {
+						.catch(function() {
 							self.userUrl = null;
 							self.token = null;
-						})
+						});
 				}
 			},
 
