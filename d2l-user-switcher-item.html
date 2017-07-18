@@ -80,7 +80,7 @@
 					type: String,
 					value: null
 				},
-				tokenGetter: {
+				getToken: {
 					type: Object,
 					value: null
 				},
@@ -100,13 +100,13 @@
 			],
 
 			observers: [
-				'_onUserChange( userUrl, tokenGetter )'
+				'_onUserChange( userUrl, getToken )'
 			],
 
-			_onUserChange: function(userUrl, tokenGetter) {
-				if (userUrl && tokenGetter && typeof tokenGetter === 'function') {
+			_onUserChange: function(userUrl, getToken) {
+				if (userUrl && typeof getToken === 'function') {
 					var self = this;
-					tokenGetter(userUrl)
+					getToken(userUrl)
 						.then(function(token) {
 							self.generateUserRequest(userUrl, token);
 						});
