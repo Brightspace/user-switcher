@@ -274,11 +274,6 @@
 						self.tokenGetter(userUrl)
 							.then(function(token) {
 								self.generateUserRequest(userUrl, token);
-							})
-							.catch(function() {
-								self.token = null;
-								self.parentData = null;
-								self.selectedUserId = null;
 							});
 					}
 				});

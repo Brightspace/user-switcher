@@ -109,10 +109,6 @@
 					tokenGetter(userUrl)
 						.then(function(token) {
 							self.generateUserRequest(userUrl, token);
-						})
-						.catch(function() {
-							self.userUrl = null;
-							self.token = null;
 						});
 				}
 			},
