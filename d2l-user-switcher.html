@@ -271,7 +271,6 @@
 					return;
 				}
 
-				var self = this;
 				this.hasUsers = true;
 				this.multipleUsers = false;
 
@@ -279,18 +278,21 @@
 					this.multipleUsers = true;
 				}
 
-				this.parentData.entities.forEach(function(student) {
-					var studentEntity = self._parseEntity(student);
-					var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user);
-					var studentId = studentLink.href.match(/[0-9a-zA-Z]+$/)[0];
-					if (studentId === self.selectedUserId) {
-						var userUrl = self._getUserUrl(student);
-						self.getToken(userUrl)
-							.then(function(token) {
-								self.generateUserRequest(userUrl, token);
-							});
-					}
-				});
+				this.parentData.entities.forEach(this._generateUserRequestFromEntity.bind(this));
+			},
+
+			_generateUserRequestFromEntity: function(student) {
+				var self = this;
+				var studentEntity = self._parseEntity(student);
+				var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user);
+				var studentId = studentLink.href.match(/[0-9a-zA-Z]+$/)[0];
+				if (studentId === self.selectedUserId) {
+					var userUrl = self._getUserUrl(student);
+					self.getToken(userUrl)
+						.then(function(token) {
+							self.generateUserRequest(userUrl, token);
+						});
+				}
 			},
 
 			_onItemClick: function(e) {
