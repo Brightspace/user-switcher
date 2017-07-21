@@ -101,7 +101,7 @@
 						class="d2l-user-switcher-opener-image transparent">
 					</d2l-image>
 					<p hidden$="[[!placeholders]]" class="text-placeholder">&nbsp;</p>
-					<p hidden$="[[placeholders]]">[[_name]]</p>
+					<p hidden$="[[placeholders]]" class="selected-user-name">[[_name]]</p>
 				</div>
 			</template>
 			<template is="dom-if" if="[[multipleUsers]]">
@@ -118,7 +118,7 @@
 							class="d2l-user-switcher-opener-image">
 						</d2l-image>
 						<p hidden$="[[!placeholders]]" class="text-placeholder">&nbsp;</p>
-						<p hidden$="[[placeholders]]">[[_name]]</p>
+						<p hidden$="[[placeholders]]" class="selected-user-name">[[_name]]</p>
 						<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
 					</button>
 					<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
@@ -258,7 +258,7 @@
 			_onNameChanged: function(name) {
 				if (name) {
 					var textPlaceholder = this.multipleUsers ? this.$$('d2l-dropdown p.text-placeholder') : this.$$('p.text-placeholder');
-					var text = this.multipleUsers ? this.$$('d2l-dropdown p:not(.text-placeholder)') : this.$$('p:not(.text-placeholder)');
+					var text = this.multipleUsers ? this.$$('d2l-dropdown p.selected-user-name') : this.$$('p.selected-user-name');
 
 					textPlaceholder.setAttribute('hidden', true);
 					text.removeAttribute('hidden');
