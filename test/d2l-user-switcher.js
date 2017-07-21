@@ -6,6 +6,8 @@ describe('d2l-user-switcher', function() {
 
 	beforeEach(function() {
 		component = fixture('d2l-user-switcher-fixture');
+		sinon.stub(component, '_generateUserRequestFromEntity');
+		component.getToken = function() { return { then: function() { return 'tooken'; } }; };
 	});
 
 	describe('smoke test', function() {
@@ -19,9 +21,6 @@ describe('d2l-user-switcher', function() {
 
 		describe('user switcher', function() {
 			it('should not be a dropdown menu', function(done) {
-				sinon.stub(component, '_generateUserRequestFromEntity');
-				component.getToken = function() { return { then: function() { return 'tooken'; } }; };
-
 				component.parentData = parentData;
 
 				setTimeout(function() {
@@ -32,10 +31,20 @@ describe('d2l-user-switcher', function() {
 			});
 		});
 
-	// 	it('should be displaying the childs information', function() {
-	// 		// expect(child name)
-	// 		// expect(child profile image)
-	// 	});
+		describe('child does not have profile image', function() {
+			it ('displays default icon', function(done) {
+				component.parentData = parentData;
+
+				setTimeout(function() {
+					var icon = component.querySelector('d2l-icon');
+
+					expect(icon).to.exist;
+					expect(icon.classList.contains('user-tile-default-icon')).to.equal(true);
+					expect(icon.classList.contains('d2l-user-switcher-opener-image')).to.equal(true);
+					done();
+				}, 0);
+			});
+		});
 	});
 
 	describe('Parent with two children', function() {
@@ -43,9 +52,6 @@ describe('d2l-user-switcher', function() {
 
 		describe('user switcher', function() {
 			it('should be a dropdown menu', function(done) {
-				sinon.stub(component, '_generateUserRequestFromEntity');
-				component.getToken = function() { return { then: function() { return 'tooken'; } }; };
-
 				component.parentData = parentData;
 
 				setTimeout(function() {
