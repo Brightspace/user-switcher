@@ -266,7 +266,8 @@
 			},
 
 			_onSelectedUserChanged: function() {
-				if (!this.parentData || !this.parentData.entities || typeof this.getToken !== 'function') {
+				if (!this.parentData || !this.parentData.entities ||
+					this.parentData.entities.length === 0 || typeof this.getToken !== 'function') {
 					this.hasUsers = false;
 					return;
 				}
