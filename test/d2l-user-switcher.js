@@ -10,287 +10,311 @@ describe('d2l-user-switcher', function() {
 		component.getToken = function() { return { then: function() { return 'tooken'; } }; };
 	});
 
-	describe('smoke test', function() {
-		it('should exist on the page', function() {
-			expect(component.is).to.equal('d2l-user-switcher');
-		});
+	it('should exist on the page', function() {
+		expect(component.is).to.equal('d2l-user-switcher');
 	});
 
-	describe('Parent with no children', function() {
-		var parentData = { entities: [] };
+	describe('parent data tests', function() {
+		var parentData;
 
-		beforeEach(function() {
-			component.parentData = parentData;
-		});
-
-		describe('user switcher', function() {
-			it('should not have an opener container', function(done) {
-				setTimeout(function() {
-					var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
-					expect(shouldNotExist).to.not.exist;
-					done();
-				});
-			});
-		});
-
-		describe('switch parent data', function() {
-			describe('go to 1 child', function() {
-				var newParentData = { entities: [{}] };
-
-				it('now displays content', function(done) {
-					component.parentData = newParentData;
-
-					setTimeout(function() {
-						var container = component.querySelector('.d2l-user-switcher-opener-container');
-						expect(container).to.exist;
-						done();
-					});
-				});
+		describe('Parent with no children', function() {
+			beforeEach(function() {
+				parentData = { entities: [] };
+				component.parentData = parentData;
 			});
 
-			describe('go to 2 children', function() {
-				var newParentData = { entities: [{}, {}] };
-
-				it('now has dropdown', function(done) {
-					component.parentData = newParentData;
-
-					setTimeout(function() {
-						var dropdown = component.querySelector('d2l-dropdown');
-						expect(dropdown).to.exist;
-						done();
-					});
-				});
-			});
-		});
-	});
-
-	describe('Parent with one child', function() {
-		var parentData = { entities: [{}] };
-
-		beforeEach(function() {
-			component.parentData = parentData;
-		});
-
-		describe('user switcher', function() {
-			it('should not be a dropdown menu', function(done) {
-				setTimeout(function() {
-					var dropdown = component.querySelector('d2l-dropdown');
-					expect(dropdown).to.not.exist;
-					done();
-				});
-			});
-		});
-
-		describe('switch parent data', function() {
-			describe('go to 2 children', function() {
-				var newParentData = { entities: [{}, {}] };
-
-				it('now displays dropdown', function(done) {
-					component.parentData = newParentData;
-
-					setTimeout(function() {
-						var dropdown = component.querySelector('d2l-dropdown');
-						expect(dropdown).to.exist;
-						done();
-					});
-				});
-			});
-
-			describe('go to 0 child', function() {
-				var newParentData = { entities: [] };
-
-				it('no longer has content', function(done) {
-					component.parentData = newParentData;
-
+			describe('user switcher', function() {
+				it('should not have an opener container', function(done) {
 					setTimeout(function() {
 						var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
+						expect(parentData.entities.length).to.equal(0);
 						expect(shouldNotExist).to.not.exist;
 						done();
 					});
 				});
 			});
+
+			describe('switch parent data', function() {
+				var newParentData;
+
+				describe('go to 1 child', function() {
+					beforeEach(function() {
+						newParentData = { entities: [{}] };
+						component.parentData = newParentData;
+					});
+
+					it('now displays content', function(done) {
+						setTimeout(function() {
+							var container = component.querySelector('.d2l-user-switcher-opener-container');
+							expect(container).to.exist;
+							done();
+						});
+					});
+				});
+
+				describe('go to 2 children', function() {
+					beforeEach(function() {
+						newParentData = { entities: [{}, {}] };
+						component.parentData = newParentData;
+					});
+
+					it('now has dropdown', function(done) {
+						setTimeout(function() {
+							var dropdown = component.querySelector('d2l-dropdown');
+							expect(dropdown).to.exist;
+							done();
+						});
+					});
+				});
+			});
 		});
 
-		describe('child has a name', function() {
-			var name = 'Fancy Pants Vance';
+		describe('Parent with one child', function() {
 			beforeEach(function() {
-				setTimeout(function() {
-					component._name = name;
-				});
+				parentData = { entities: [{}] };
+				component.parentData = parentData;
 			});
 
-			it('displays childs name', function() {
-				setTimeout(function() {
-					var nameElement = component.querySelector('p.selected-user-name');
-					expect(nameElement.hasAttribute('hidden')).to.not.equal(true);
-					expect(nameElement.innerText).to.equal(name);
-				});
-			});
-		});
-
-		describe('child does not have profile image', function() {
-			it ('displays default icon', function(done) {
-				setTimeout(function() {
-					var icon = component.querySelector('d2l-icon.d2l-user-switcher-opener-image');
-
-					expect(icon).to.exist;
-					expect(icon.classList.contains('user-tile-default-icon')).to.equal(true);
-					expect(icon.hasAttribute('hidden')).to.not.equal(true);
-					done();
-				});
-			});
-			it ('does not display custom image', function(done) {
-				setTimeout(function() {
-					var image = component.querySelector('d2l-image.d2l-user-switcher-opener-image');
-
-					expect(image).to.exist;
-					expect(image.hasAttribute('hidden')).to.equal(true);
-					done();
-				});
-			});
-		});
-
-		describe('child does have a profile image', function() {
-			var imageUrl = 'http://lookatme';
-			beforeEach(function() {
-				setTimeout(function() {
-					component._iconUrl = imageUrl;
-				});
-			});
-
-			it('displays profile image', function(done) {
-				setTimeout(function() {
-					var image = component.querySelector('d2l-image.d2l-user-switcher-opener-image');
-
-					expect(image.hasAttribute('hidden')).to.not.equal(true);
-					done();
-				}, 350);
-			});
-
-			it ('does not display default icon', function(done) {
-				setTimeout(function() {
-					var icon = component.querySelector('d2l-icon.d2l-user-switcher-opener-image');
-
-					expect(icon.classList.contains('user-tile-default-icon')).to.equal(true);
-					expect(icon.hasAttribute('hidden')).to.equal(true);
-					done();
-				}, 350);
-			});
-		});
-	});
-
-	describe('Parent with two children', function() {
-		var parentData = { entities: [{ id: '0' }, { id: '1' }] };
-
-		beforeEach(function() {
-			sinon.stub(component, '_getUserUrl', function(user) { return user.id; });
-			component.parentData = parentData;
-		});
-
-		describe('user switcher', function() {
-			it('should be a dropdown menu', function(done) {
-				setTimeout(function() {
-					var dropdown = component.querySelector('d2l-dropdown');
-					expect(dropdown).to.exist;
-					done();
-				});
-			});
-		});
-
-		describe('switch parent data', function() {
-			describe('go to 1 child', function() {
-				var newParentData = { entities: [{}] };
-
-				it('no longer displays dropdown', function(done) {
-					component.parentData = newParentData;
-
+			describe('user switcher', function() {
+				it('should not be a dropdown menu', function(done) {
 					setTimeout(function() {
 						var dropdown = component.querySelector('d2l-dropdown');
 						expect(dropdown).to.not.exist;
 						done();
 					});
 				});
+
+				describe('child has a name', function() {
+					var name;
+
+					beforeEach(function() {
+						name = 'Fancy Pants Vance';
+
+						setTimeout(function() {
+							component._name = name;
+						});
+					});
+
+					it('displays childs name', function() {
+						setTimeout(function() {
+							var nameElement = component.querySelector('p.selected-user-name');
+							expect(nameElement.hasAttribute('hidden')).to.not.equal(true);
+							expect(nameElement.innerText).to.equal(name);
+						});
+					});
+				});
+
+				describe('profile picture', function() {
+					var defaultIcon;
+					var customImage;
+
+					beforeEach(function() {
+						setTimeout(function() {
+							defaultIcon = component.querySelector('d2l-icon.d2l-user-switcher-opener-image');
+							customImage = component.querySelector('d2l-image.d2l-user-switcher-opener-image');
+						});
+					});
+
+					describe('has custom profile picture', function() {
+						var imageUrl;
+
+						beforeEach(function() {
+							imageUrl = 'http://lookatme';
+
+							setTimeout(function() {
+								component._iconUrl = imageUrl;
+							});
+						});
+
+						it('should display custom profile picture', function(done) {
+							setTimeout(function() {
+								expect(customImage.hasAttribute('hidden')).to.not.equal(true);
+								done();
+							}, 350);
+						});
+
+						it ('should not display default icon', function(done) {
+							setTimeout(function() {
+								expect(defaultIcon.classList.contains('user-tile-default-icon')).to.equal(true);
+								expect(defaultIcon.hasAttribute('hidden')).to.equal(true);
+								done();
+							}, 350);
+						});
+					});
+
+					describe('does not have custom profile picture', function() {
+						it('should display default icon', function(done) {
+							setTimeout(function() {
+								expect(defaultIcon).to.exist;
+								expect(defaultIcon.classList.contains('user-tile-default-icon')).to.equal(true);
+								expect(defaultIcon.hasAttribute('hidden')).to.not.equal(true);
+								done();
+							});
+						});
+
+						it('should not display custom profile picture', function(done) {
+							setTimeout(function() {
+								expect(customImage).to.exist;
+								expect(customImage.hasAttribute('hidden')).to.equal(true);
+								done();
+							});
+						});
+					});
+				});
 			});
 
-			describe('go to 0 child', function() {
-				var newParentData = { entities: [] };
+			describe('switch parent data', function() {
+				var newParentData;
 
-				it('no longer has content', function(done) {
-					component.parentData = newParentData;
+				describe('go to 2 children', function() {
+					beforeEach(function() {
+						newParentData = { entities: [{}, {}] };
+						component.parentData = newParentData;
+					});
 
-					setTimeout(function() {
-						var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
-						expect(shouldNotExist).to.not.exist;
-						done();
+					it('now displays dropdown', function(done) {
+						setTimeout(function() {
+							var dropdown = component.querySelector('d2l-dropdown');
+							expect(dropdown).to.exist;
+							done();
+						});
+					});
+				});
+
+				describe('go to 0 child', function() {
+					beforeEach(function() {
+						newParentData = { entities: [] };
+						component.parentData = newParentData;
+					});
+
+					it('no longer has content', function(done) {
+						setTimeout(function() {
+							var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
+							expect(shouldNotExist).to.not.exist;
+							done();
+						});
 					});
 				});
 			});
 		});
 
-		describe('drop down', function() {
-			it('should contain an entry for each child', function(done) {
-				setTimeout(function() {
-					var dropdown = component.querySelector('d2l-dropdown');
-					var entries = Polymer.dom(dropdown).querySelectorAll('d2l-user-switcher-item');
+		describe('Parent with two children', function() {
+			beforeEach(function() {
+				parentData = { entities: [{ id: '0' }, { id: '1' }] };
+				sinon.stub(component, '_getUserUrl', function(user) { return user.id; });
+				component.parentData = parentData;
+			});
 
-					expect(entries.length).to.be.equal(parentData.entities.length);
-					done();
+			describe('user switcher', function() {
+				it('should display a dropdown menu', function(done) {
+					setTimeout(function() {
+						var dropdown = component.querySelector('d2l-dropdown');
+						expect(dropdown).to.exist;
+						done();
+					});
+				});
+
+				describe('drop down', function() {
+					var dropdown;
+					var entries;
+
+					beforeEach(function() {
+						setTimeout(function() {
+							dropdown = component.querySelector('d2l-dropdown');
+							entries = Polymer.dom(dropdown).querySelectorAll('d2l-user-switcher-item');
+						});
+					});
+
+					it('should have a user-switcher-item for each child', function(done) {
+						setTimeout(function() {
+							expect(entries.length).to.be.equal(parentData.entities.length);
+							done();
+						});
+					});
+
+					describe('student selected event', function() {
+						var studentSelectedSpy;
+						var event;
+
+						beforeEach(function() {
+							studentSelectedSpy = sinon.spy();
+							component.addEventListener('studentSelected', studentSelectedSpy);
+						});
+
+						afterEach(function() {
+							component.removeEventListener('studentSelected', studentSelectedSpy);
+						});
+
+						it('is fired on tap', function(done) {
+							setTimeout(function() {
+								event = new Event('tap');
+								entries[0].dispatchEvent(event);
+
+								setTimeout(function() {
+									expect(studentSelectedSpy).to.be.called;
+									done();
+								});
+							});
+						});
+
+						it('is fired on enter', function(done) {
+							setTimeout(function() {
+								event = new Event('keydown');
+								event.keyCode = 13;
+								entries[0].dispatchEvent(event);
+
+								setTimeout(function() {
+									expect(studentSelectedSpy).to.be.called;
+									done();
+								});
+							});
+						});
+
+						it('is fired on space', function(done) {
+							setTimeout(function() {
+								event = new Event('keydown');
+								event.keyCode = 32;
+								entries[0].dispatchEvent(event);
+
+								setTimeout(function() {
+									expect(studentSelectedSpy).to.be.called;
+									done();
+								});
+							});
+						});
+					});
 				});
 			});
 
-			it('should fire event when an item is clicked', function(done) {
-				setTimeout(function() {
-					var dropdown = component.querySelector('d2l-dropdown');
-					var entries = Polymer.dom(dropdown).querySelectorAll('d2l-user-switcher-item');
+			describe('switch parent data', function() {
+				var newParentData;
 
-					var studentSelectedSpy = sinon.spy();
-
-					setTimeout(function() {
-						expect(studentSelectedSpy).to.be.called;
-						done();
+				describe('go to 0 children', function() {
+					beforeEach(function() {
+						newParentData = { entities: [] };
+						component.parentData = newParentData;
 					});
 
-					component.addEventListener('studentSelected', studentSelectedSpy);
-					var event = new Event('tap');
-					entries[0].dispatchEvent(event);
+					it('no longer has content', function(done) {
+						setTimeout(function() {
+							var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
+							expect(shouldNotExist).to.not.exist;
+							done();
+						});
+					});
 				});
-			});
 
-			it('should fire event when enter is pressed on item', function(done) {
-				setTimeout(function() {
-					var dropdown = component.querySelector('d2l-dropdown');
-					var entries = Polymer.dom(dropdown).querySelectorAll('d2l-user-switcher-item');
-
-					var studentSelectedSpy = sinon.spy();
-
-					setTimeout(function() {
-						expect(studentSelectedSpy).to.be.called;
-						done();
+				describe('go to 1 child', function() {
+					beforeEach(function() {
+						newParentData = { entities: [{}] };
+						component.parentData = newParentData;
 					});
 
-					component.addEventListener('studentSelected', studentSelectedSpy);
-					var event = new Event('keydown');
-					event.keyCode = 13;
-					entries[0].dispatchEvent(event);
-				});
-			});
-
-			it('should fire event when space is pressed on item', function(done) {
-				setTimeout(function() {
-					var dropdown = component.querySelector('d2l-dropdown');
-					var entries = Polymer.dom(dropdown).querySelectorAll('d2l-user-switcher-item');
-
-					var studentSelectedSpy = sinon.spy();
-
-					setTimeout(function() {
-						expect(studentSelectedSpy).to.be.called;
+					it('no longer displays dropdown', function(done) {
+						var dropdown = component.querySelector('d2l-dropdown');
+						expect(dropdown).to.not.exist;
 						done();
 					});
-
-					component.addEventListener('studentSelected', studentSelectedSpy);
-					var event = new Event('keydown');
-					event.keyCode = 32;
-					entries[0].dispatchEvent(event);
 				});
 			});
 		});
