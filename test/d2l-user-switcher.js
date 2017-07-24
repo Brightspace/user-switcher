@@ -32,6 +32,14 @@ describe('d2l-user-switcher', function() {
 						done();
 					});
 				});
+
+				it('should not have a dropdown', function(done) {
+					setTimeout(function() {
+						var dropdown = component.querySelector('d2l-dropdown');
+						expect(dropdown).to.not.exist;
+						done();
+					});
+				});
 			});
 
 			describe('switch parent data', function() {
@@ -47,6 +55,14 @@ describe('d2l-user-switcher', function() {
 						setTimeout(function() {
 							var container = component.querySelector('.d2l-user-switcher-opener-container');
 							expect(container).to.exist;
+							done();
+						});
+					});
+
+					it('still does not have a dropdown', function(done) {
+						setTimeout(function() {
+							var dropdown = component.querySelector('d2l-dropdown');
+							expect(dropdown).to.not.exist;
 							done();
 						});
 					});
@@ -80,6 +96,14 @@ describe('d2l-user-switcher', function() {
 					setTimeout(function() {
 						var dropdown = component.querySelector('d2l-dropdown');
 						expect(dropdown).to.not.exist;
+						done();
+					});
+				});
+
+				it('should have content', function(done) {
+					setTimeout(function() {
+						var container = component.querySelector('.d2l-user-switcher-opener-container');
+						expect(container).to.exist;
 						done();
 					});
 				});
@@ -181,7 +205,7 @@ describe('d2l-user-switcher', function() {
 					});
 				});
 
-				describe('go to 0 child', function() {
+				describe('go to 0 children', function() {
 					beforeEach(function() {
 						newParentData = { entities: [] };
 						component.parentData = newParentData;
@@ -191,6 +215,14 @@ describe('d2l-user-switcher', function() {
 						setTimeout(function() {
 							var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
 							expect(shouldNotExist).to.not.exist;
+							done();
+						});
+					});
+
+					it('still does not have a dropdown', function(done) {
+						setTimeout(function() {
+							var dropdown = component.querySelector('d2l-dropdown');
+							expect(dropdown).to.not.exist;
 							done();
 						});
 					});
@@ -282,6 +314,19 @@ describe('d2l-user-switcher', function() {
 								});
 							});
 						});
+
+						it('is not fired on arbitrary non space or enter keys', function(done) {
+							setTimeout(function() {
+								event = new Event('keydown');
+								event.keyCode = 70;
+								entries[0].dispatchEvent(event);
+
+								setTimeout(function() {
+									expect(studentSelectedSpy).to.not.be.called;
+									done();
+								});
+							});
+						});
 					});
 				});
 			});
@@ -314,6 +359,14 @@ describe('d2l-user-switcher', function() {
 						var dropdown = component.querySelector('d2l-dropdown');
 						expect(dropdown).to.not.exist;
 						done();
+					});
+
+					it('still has content', function(done) {
+						setTimeout(function() {
+							var container = component.querySelector('.d2l-user-switcher-opener-container');
+							expect(container).to.exist;
+							done();
+						});
 					});
 				});
 			});
