@@ -9,7 +9,7 @@ describe('d2l-user-switcher', function() {
 		component = fixture('d2l-user-switcher-fixture');
 		hasUsersTemplate = component.querySelector('.has-users-template');
 		sinon.stub(component, '_generateUserRequestFromEntity');
-		component.getToken = function() { return { then: function() { return 'tooken'; } }; };
+		component.getToken = function() { return Promise.resolve('token'); };
 	});
 
 	it('should exist on the page', function() {
