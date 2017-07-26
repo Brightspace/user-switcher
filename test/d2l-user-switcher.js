@@ -344,9 +344,11 @@ describe('d2l-user-switcher', function() {
 					});
 
 					it('no longer displays dropdown', function(done) {
-						var dropdown = component.querySelector('d2l-dropdown');
-						expect(dropdown).to.not.exist;
-						done();
+						flush(function() {
+							var dropdown = component.querySelector('d2l-dropdown');
+							expect(dropdown).to.not.exist;
+							done();
+						});
 					});
 
 					it('still has content', function(done) {
