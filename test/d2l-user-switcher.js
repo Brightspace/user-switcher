@@ -3,9 +3,11 @@
 
 describe('d2l-user-switcher', function() {
 	var component;
+	var hasUsersTemplate;
 
 	beforeEach(function() {
 		component = fixture('d2l-user-switcher-fixture');
+		hasUsersTemplate = component.querySelector('.has-users-template');
 		sinon.stub(component, '_generateUserRequestFromEntity');
 		component.getToken = function() { return { then: function() { return 'tooken'; } }; };
 	});
@@ -25,7 +27,7 @@ describe('d2l-user-switcher', function() {
 
 			describe('user switcher', function() {
 				it('should not have an opener container', function(done) {
-					setTimeout(function() {
+					flush(function() {
 						var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
 						expect(parentData.entities.length).to.equal(0);
 						expect(shouldNotExist).to.not.exist;
@@ -34,7 +36,7 @@ describe('d2l-user-switcher', function() {
 				});
 
 				it('should not have a dropdown', function(done) {
-					setTimeout(function() {
+					flush(function() {
 						var dropdown = component.querySelector('d2l-dropdown');
 						expect(dropdown).to.not.exist;
 						done();
@@ -52,7 +54,7 @@ describe('d2l-user-switcher', function() {
 					});
 
 					it('now displays content', function(done) {
-						setTimeout(function() {
+						flush(function() {
 							var container = component.querySelector('.d2l-user-switcher-opener-container');
 							expect(container).to.exist;
 							done();
@@ -60,7 +62,7 @@ describe('d2l-user-switcher', function() {
 					});
 
 					it('still does not have a dropdown', function(done) {
-						setTimeout(function() {
+						flush(function() {
 							var dropdown = component.querySelector('d2l-dropdown');
 							expect(dropdown).to.not.exist;
 							done();
@@ -75,7 +77,7 @@ describe('d2l-user-switcher', function() {
 					});
 
 					it('now has dropdown', function(done) {
-						setTimeout(function() {
+						flush(function() {
 							var dropdown = component.querySelector('d2l-dropdown');
 							expect(dropdown).to.exist;
 							done();
@@ -93,7 +95,7 @@ describe('d2l-user-switcher', function() {
 
 			describe('user switcher', function() {
 				it('should not be a dropdown menu', function(done) {
-					setTimeout(function() {
+					flush(function() {
 						var dropdown = component.querySelector('d2l-dropdown');
 						expect(dropdown).to.not.exist;
 						done();
@@ -101,7 +103,7 @@ describe('d2l-user-switcher', function() {
 				});
 
 				it('should have content', function(done) {
-					setTimeout(function() {
+					flush(function() {
 						var container = component.querySelector('.d2l-user-switcher-opener-container');
 						expect(container).to.exist;
 						done();
@@ -113,17 +115,16 @@ describe('d2l-user-switcher', function() {
 
 					beforeEach(function() {
 						name = 'Fancy Pants Vance';
-
-						setTimeout(function() {
-							component._name = name;
-						});
+						hasUsersTemplate.render();
+						component._name = name;
 					});
 
-					it('displays childs name', function() {
-						setTimeout(function() {
+					it('displays childs name', function(done) {
+						flush(function() {
 							var nameElement = component.querySelector('p.selected-user-name');
 							expect(nameElement.hasAttribute('hidden')).to.not.equal(true);
 							expect(nameElement.innerText).to.equal(name);
+							done();
 						});
 					});
 				});
@@ -133,10 +134,9 @@ describe('d2l-user-switcher', function() {
 					var customImage;
 
 					beforeEach(function() {
-						setTimeout(function() {
-							defaultIcon = component.querySelector('d2l-icon.d2l-user-switcher-opener-image');
-							customImage = component.querySelector('d2l-image.d2l-user-switcher-opener-image');
-						});
+						hasUsersTemplate.render();
+						defaultIcon = component.querySelector('d2l-icon.d2l-user-switcher-opener-image');
+						customImage = component.querySelector('d2l-image.d2l-user-switcher-opener-image');
 					});
 
 					describe('has custom profile picture', function() {
@@ -144,10 +144,7 @@ describe('d2l-user-switcher', function() {
 
 						beforeEach(function() {
 							imageUrl = 'http://lookatme';
-
-							setTimeout(function() {
-								component._iconUrl = imageUrl;
-							});
+							component._iconUrl = imageUrl;
 						});
 
 						it('should display custom profile picture', function(done) {
@@ -168,7 +165,7 @@ describe('d2l-user-switcher', function() {
 
 					describe('does not have custom profile picture', function() {
 						it('should display default icon', function(done) {
-							setTimeout(function() {
+							flush(function() {
 								expect(defaultIcon).to.exist;
 								expect(defaultIcon.classList.contains('user-tile-default-icon')).to.equal(true);
 								expect(defaultIcon.hasAttribute('hidden')).to.not.equal(true);
@@ -177,7 +174,7 @@ describe('d2l-user-switcher', function() {
 						});
 
 						it('should not display custom profile picture', function(done) {
-							setTimeout(function() {
+							flush(function() {
 								expect(customImage).to.exist;
 								expect(customImage.hasAttribute('hidden')).to.equal(true);
 								done();
@@ -197,7 +194,7 @@ describe('d2l-user-switcher', function() {
 					});
 
 					it('now displays dropdown', function(done) {
-						setTimeout(function() {
+						flush(function() {
 							var dropdown = component.querySelector('d2l-dropdown');
 							expect(dropdown).to.exist;
 							done();
@@ -212,7 +209,7 @@ describe('d2l-user-switcher', function() {
 					});
 
 					it('no longer has content', function(done) {
-						setTimeout(function() {
+						flush(function() {
 							var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
 							expect(shouldNotExist).to.not.exist;
 							done();
@@ -220,7 +217,7 @@ describe('d2l-user-switcher', function() {
 					});
 
 					it('still does not have a dropdown', function(done) {
-						setTimeout(function() {
+						flush(function() {
 							var dropdown = component.querySelector('d2l-dropdown');
 							expect(dropdown).to.not.exist;
 							done();
@@ -239,7 +236,7 @@ describe('d2l-user-switcher', function() {
 
 			describe('user switcher', function() {
 				it('should display a dropdown menu', function(done) {
-					setTimeout(function() {
+					flush(function() {
 						var dropdown = component.querySelector('d2l-dropdown');
 						expect(dropdown).to.exist;
 						done();
@@ -251,14 +248,13 @@ describe('d2l-user-switcher', function() {
 					var entries;
 
 					beforeEach(function() {
-						setTimeout(function() {
-							dropdown = component.querySelector('d2l-dropdown');
-							entries = Polymer.dom(dropdown).querySelectorAll('d2l-user-switcher-item');
-						});
+						hasUsersTemplate.render();
+						dropdown = component.querySelector('d2l-dropdown');
+						entries = Polymer.dom(dropdown).querySelectorAll('d2l-user-switcher-item');
 					});
 
 					it('should have a user-switcher-item for each child', function(done) {
-						setTimeout(function() {
+						flush(function() {
 							expect(entries.length).to.be.equal(parentData.entities.length);
 							done();
 						});
@@ -278,53 +274,45 @@ describe('d2l-user-switcher', function() {
 						});
 
 						it('is fired on tap', function(done) {
-							setTimeout(function() {
-								event = new Event('tap');
-								entries[0].dispatchEvent(event);
+							event = new Event('tap');
+							entries[0].dispatchEvent(event);
 
-								setTimeout(function() {
-									expect(studentSelectedSpy).to.be.called;
-									done();
-								});
+							flush(function() {
+								expect(studentSelectedSpy).to.be.called;
+								done();
 							});
 						});
 
 						it('is fired on enter', function(done) {
-							setTimeout(function() {
-								event = new Event('keydown');
-								event.keyCode = 13;
-								entries[0].dispatchEvent(event);
+							event = new Event('keydown');
+							event.keyCode = 13;
+							entries[0].dispatchEvent(event);
 
-								setTimeout(function() {
-									expect(studentSelectedSpy).to.be.called;
-									done();
-								});
+							flush(function() {
+								expect(studentSelectedSpy).to.be.called;
+								done();
 							});
 						});
 
 						it('is fired on space', function(done) {
-							setTimeout(function() {
-								event = new Event('keydown');
-								event.keyCode = 32;
-								entries[0].dispatchEvent(event);
+							event = new Event('keydown');
+							event.keyCode = 32;
+							entries[0].dispatchEvent(event);
 
-								setTimeout(function() {
-									expect(studentSelectedSpy).to.be.called;
-									done();
-								});
+							flush(function() {
+								expect(studentSelectedSpy).to.be.called;
+								done();
 							});
 						});
 
 						it('is not fired on arbitrary non space or enter keys', function(done) {
-							setTimeout(function() {
-								event = new Event('keydown');
-								event.keyCode = 70;
-								entries[0].dispatchEvent(event);
+							event = new Event('keydown');
+							event.keyCode = 70;
+							entries[0].dispatchEvent(event);
 
-								setTimeout(function() {
-									expect(studentSelectedSpy).to.not.be.called;
-									done();
-								});
+							flush(function() {
+								expect(studentSelectedSpy).to.not.be.called;
+								done();
 							});
 						});
 					});
@@ -341,7 +329,7 @@ describe('d2l-user-switcher', function() {
 					});
 
 					it('no longer has content', function(done) {
-						setTimeout(function() {
+						flush(function() {
 							var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
 							expect(shouldNotExist).to.not.exist;
 							done();
@@ -362,7 +350,7 @@ describe('d2l-user-switcher', function() {
 					});
 
 					it('still has content', function(done) {
-						setTimeout(function() {
+						flush(function() {
 							var container = component.querySelector('.d2l-user-switcher-opener-container');
 							expect(container).to.exist;
 							done();

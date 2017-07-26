@@ -87,8 +87,8 @@
 			}
 		</style>
 
-		<template is="dom-if" if="[[hasUsers]]">
-			<template is="dom-if" if="[[!multipleUsers]]">
+		<template is="dom-if" if="[[hasUsers]]" class="has-users-template">
+			<template is="dom-if" if="[[!multipleUsers]]" class="single-user-template">
 				<div class="d2l-user-switcher-opener-container">
 					<d2l-icon
 						icon="d2l-tier3:profile-pic"
@@ -104,7 +104,7 @@
 					<p hidden$="[[placeholders]]" class="selected-user-name">[[_name]]</p>
 				</div>
 			</template>
-			<template is="dom-if" if="[[multipleUsers]]">
+			<template is="dom-if" if="[[multipleUsers]]" class="multiple-users-template">
 				<d2l-dropdown>
 					<button class="d2l-user-switcher-opener-container pointer d2l-dropdown-opener" on-mouseenter="_disableFocusOnClick" on-mouseleave="_enableFocusOnClick" aria-label$="[[localize('switchUser', 'name', _name)]]">
 						<d2l-icon
