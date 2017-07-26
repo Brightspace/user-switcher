@@ -1,4 +1,4 @@
-/* global describe, fixture, it, expect, beforeEach */
+/* global describe, fixture, it, expect, beforeEach, MockInteractions */
 'use strict';
 
 describe('d2l-user-switcher', function() {
@@ -262,11 +262,13 @@ describe('d2l-user-switcher', function() {
 
 					describe('student selected event', function() {
 						var studentSelectedSpy;
-						var event;
+						var entry;
 
 						beforeEach(function() {
 							studentSelectedSpy = sinon.spy();
 							component.addEventListener('studentSelected', studentSelectedSpy);
+
+							entry = entries[0];
 						});
 
 						afterEach(function() {
@@ -274,8 +276,7 @@ describe('d2l-user-switcher', function() {
 						});
 
 						it('is fired on tap', function(done) {
-							event = new Event('tap');
-							entries[0].dispatchEvent(event);
+							MockInteractions.tap(entry);
 
 							flush(function() {
 								expect(studentSelectedSpy).to.be.called;
@@ -284,9 +285,7 @@ describe('d2l-user-switcher', function() {
 						});
 
 						it('is fired on enter', function(done) {
-							event = new Event('keydown');
-							event.keyCode = 13;
-							entries[0].dispatchEvent(event);
+							MockInteractions.pressEnter(entry);
 
 							flush(function() {
 								expect(studentSelectedSpy).to.be.called;
@@ -295,9 +294,7 @@ describe('d2l-user-switcher', function() {
 						});
 
 						it('is fired on space', function(done) {
-							event = new Event('keydown');
-							event.keyCode = 32;
-							entries[0].dispatchEvent(event);
+							MockInteractions.pressSpace(entry);
 
 							flush(function() {
 								expect(studentSelectedSpy).to.be.called;
@@ -306,9 +303,7 @@ describe('d2l-user-switcher', function() {
 						});
 
 						it('is not fired on arbitrary non space or enter keys', function(done) {
-							event = new Event('keydown');
-							event.keyCode = 70;
-							entries[0].dispatchEvent(event);
+							MockInteractions.pressAndReleaseKeyOn(entry, 70);
 
 							flush(function() {
 								expect(studentSelectedSpy).to.not.be.called;

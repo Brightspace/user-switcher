@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "d2l-demo-template": "^0.0.12",
-    "web-component-tester": "^6.0.0"
+    "web-component-tester": "^6.0.0",
+    "iron-test-helpers": "^2.0.0"
   }
 }
