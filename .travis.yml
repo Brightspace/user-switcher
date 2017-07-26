@@ -4,3 +4,4 @@ sudo: false
 script:
 - npm run test:lint:js
 - npm run test:lint:wc
+- npm run test:polymer
