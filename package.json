@@ -29,6 +29,7 @@
     "eslint": "^2.4.0",
     "eslint-config-brightspace": "^0.2.1",
     "eslint-plugin-html": "^1.4.0",
-    "polymer-cli": "^1.1.0"
+    "polymer-cli": "^1.1.0",
+    "wct-local":"2.0.12"
   }
 }
