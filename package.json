@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "postinstall": "bower install",
-    "test": "npm run test:lint:js && npm run test:lint:wc",
+    "test": "npm run test:lint:js && npm run test:polymer",
     "test:lint:js": "eslint --ext .js,.html .",
-    "test:lint:wc": "polymer lint --input d2l-user-switcher.html && polymer lint --input d2l-user-switcher-item.html"
+    "test:lint:wc": "polymer lint --input d2l-user-switcher.html && polymer lint --input d2l-user-switcher-item.html",
+    "test:polymer": "polymer test -p"
   },
   "homepage": "https://github.com/Brightspace/user-switcher",
   "repository": {
@@ -28,6 +29,7 @@
     "eslint": "^2.4.0",
     "eslint-config-brightspace": "^0.2.1",
     "eslint-plugin-html": "^1.4.0",
-    "polymer-cli": "^1.1.0"
+    "polymer-cli": "^1.1.0",
+    "wct-local":"2.0.12"
   }
 }
