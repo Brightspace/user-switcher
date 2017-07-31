@@ -28,6 +28,9 @@
     "polymer": "^1.8.0",
     "iron-icon": "^1.0.13"
   },
+  "resolutions": {
+    "webcomponentsjs": "^0.7.24"
+  },
   "devDependencies": {
     "d2l-demo-template": "^0.0.12",
     "web-component-tester": "^6.0.0",
