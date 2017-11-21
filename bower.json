@@ -20,7 +20,7 @@
     "app-localize-behavior": "^1.0.2",
     "d2l-colors": "^2.2.3",
     "d2l-dropdown": "^5.0.5",
-    "d2l-hm-constants-behavior": "git://github.com/Brightspace/d2l-hm-constants-behavior.git#^2.0.0",
+    "d2l-hm-constants-behavior": "git://github.com/Brightspace/d2l-hm-constants-behavior.git#^3.0.0",
     "d2l-icons": "^3.6.0",
     "d2l-image": "git://github.com/Brightspace/d2l-image#^1.0.0",
     "d2l-menu": "^0.3.0",
