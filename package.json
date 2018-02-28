@@ -7,7 +7,8 @@
     "test": "npm run test:lint:js && npm run test:polymer",
     "test:lint:js": "eslint --ext .js,.html .",
     "test:lint:wc": "polymer lint --input d2l-user-switcher.html && polymer lint --input d2l-user-switcher-item.html",
-    "test:polymer": "polymer test -p"
+    "test:polymer": "polymer test",
+    "test:polymer:local": "polymer test -p --skip-plugin sauce"
   },
   "homepage": "https://github.com/Brightspace/user-switcher",
   "repository": {

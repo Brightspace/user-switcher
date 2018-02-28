@@ -2,7 +2,6 @@ language: node_js
 node_js: stable
 sudo: false
 addons:
-  firefox: latest
   apt:
     packages:
     - oracle-java8-installer
@@ -10,4 +9,4 @@ addons:
 script:
 - npm run test:lint:js
 - npm run test:lint:wc
-- xvfb-run wct
+- npm run test:polymer
