@@ -1,28 +1,37 @@
 <head>
-	<script src="https://s.brightspace.com/lib/webcomponentsjs/0.7.21/webcomponents.min.js"></script>
-	<link rel="import" href="../../d2l-demo-template/d2l-demo-template.html">
+	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+	<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+	<link rel="import" href="../../d2l-typography/d2l-typography.html">
 	<link rel="import" href="../d2l-user-switcher.html">
 	<style>
-		.d2l-demo-fixture {
-			display: flex;
-			flex-direction: column;
-			flex-wrap: wrap;
-		}
 		d2l-user-switcher {
 			height: 50px;
 			width: 300px;
 			margin-bottom: 20px;
 		}
 	</style>
+	<custom-style>
+		<style is="custom-style" include="demo-pages-shared-styles"></style>
+	</custom-style>
+	<custom-style include="d2l-typography">
+		<style is="custom-style" include="d2l-typography"></style>
+	</custom-style>
 </head>
-<body>
-	<d2l-demo-template title="d2l-user-switcher">
-		<div class="d2l-demo-fixture">
+<body unresolved class="d2l-typography">
+	<div class="vertical-section-container centered">
+		<demo-snippet><template>
 			<d2l-user-switcher id="no-placeholder"></d2l-user-switcher>
+		</template></demo-snippet>
+
+		<demo-snippet><template>
 			<d2l-user-switcher id="placeholder" placeholders></d2l-user-switcher>
+		</template></demo-snippet>
+
+		<demo-snippet><template>
 			<d2l-user-switcher id="multi-user" placeholders></d2l-user-switcher>
-		</div>
-	</d2l-demo-template>
+		</template></demo-snippet>
+	</div>
 
 	<script>
 		'use strict';
