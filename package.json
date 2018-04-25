@@ -5,7 +5,7 @@
   "scripts": {
     "postinstall": "polymer install --variants",
     "test": "npm run test:lint:js && npm run test:polymer",
-    "test:lint:js": "eslint --ext .js,.html .",
+    "test:lint:js": "eslint --ext ./*.js,./*.html .",
     "test:lint:wc": "polymer lint --input d2l-user-switcher.html && polymer lint --input d2l-user-switcher-item.html",
     "test:polymer": "polymer test",
     "test:polymer:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test -p --skip-plugin sauce"
