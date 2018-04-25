@@ -1,8 +1,7 @@
 language: node_js
 node_js: 9
-sudo: false
 addons:
-  firefox: latest
+  chrome: latest
   apt:
     packages:
     - oracle-java8-installer
