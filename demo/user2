@@ -10,7 +10,7 @@
       "rel": ["https://api.brightspace.com/rels/profile-image"],
       "class": [],
       "links": [{
-        "rel": ["https://api.brightspace.com/rels/thumbnail#small"],
+        "rel": ["https://api.brightspace.com/rels/thumbnail#regular"],
         "href": "abe.jpg"
       }]
     }]

@@ -3,12 +3,16 @@
 	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
 	<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
 	<link rel="import" href="../../d2l-typography/d2l-typography.html">
+	<link rel="import" href="../../d2l-fetch/d2l-fetch.html">
 	<link rel="import" href="../d2l-user-switcher.html">
 	<style>
 		d2l-user-switcher {
+			margin-bottom: 20px;
+		}
+
+		.wrapper {
 			height: 50px;
 			width: 300px;
-			margin-bottom: 20px;
 		}
 	</style>
 	<custom-style>
@@ -21,36 +25,63 @@
 <body unresolved class="d2l-typography">
 	<div class="vertical-section-container centered">
 		<demo-snippet><template>
-			<d2l-user-switcher id="no-placeholder"></d2l-user-switcher>
+			<div class="wrapper">
+				<d2l-user-switcher id="no-placeholder"></d2l-user-switcher>
+			</div>
 		</template></demo-snippet>
 
 		<demo-snippet><template>
-			<d2l-user-switcher id="placeholder" placeholders></d2l-user-switcher>
+			<div class="wrapper">
+				<d2l-user-switcher id="placeholder" placeholders></d2l-user-switcher>
+			</div>
 		</template></demo-snippet>
 
 		<demo-snippet><template>
-			<d2l-user-switcher id="multi-user" placeholders></d2l-user-switcher>
+			<div class="wrapper">
+				<d2l-user-switcher id="multi-user" placeholders></d2l-user-switcher>
+			</div>
 		</template></demo-snippet>
 	</div>
 
 	<script>
 		'use strict';
 
-		var placeholderSwitcher = document.getElementById('placeholder');
-		placeholderSwitcher.hasUsers = true;
-		var noPlaceholderSwitcher = document.getElementById('no-placeholder');
-		noPlaceholderSwitcher.hasUsers = true;
-		var multiUserSwitcher = document.getElementById('multi-user');
-		multiUserSwitcher.hasUsers = true;
+		setTimeout(function() {
+			var placeholderSwitcher = document.querySelector('#placeholder');
+			var noPlaceholderSwitcher = document.getElementById('no-placeholder');
+			var multiUserSwitcher = document.getElementById('multi-user');
+
+			placeholderSwitcher.hasUsers = true;
+			noPlaceholderSwitcher.hasUsers = true;
+			multiUserSwitcher.hasUsers = true;
+		}, 100);
 
 		setTimeout(function() {
+			var placeholderSwitcher = document.querySelector('#placeholder');
+			var noPlaceholderSwitcher = document.getElementById('no-placeholder');
+			var multiUserSwitcher = document.getElementById('multi-user');
+
+			placeholderSwitcher.hasUsers = true;
+			noPlaceholderSwitcher.hasUsers = true;
+			multiUserSwitcher.hasUsers = true;
+
+			var tokenFunc = function() { return Promise.resolve('token'); };
+
+			placeholderSwitcher.getToken = tokenFunc;
+			noPlaceholderSwitcher.getToken = tokenFunc;
+			multiUserSwitcher.getToken = tokenFunc;
+
+			placeholderSwitcher.selectedUserId = 'user1';
+			noPlaceholderSwitcher.selectedUserId = 'user1';
+			multiUserSwitcher.selectedUserId = 'user1';
+
 			placeholderSwitcher.parentData = {
 				entities: [{
 					rel: ['foo'],
 					properties: { token: 'foo' },
 					links: [{
 						rel: ['https://api.brightspace.com/rels/user'],
-						href: 'user1.json'
+						href: 'user1'
 					}]
 				}]
 			};
@@ -60,7 +91,7 @@
 					properties: { token: 'foo' },
 					links: [{
 						rel: ['https://api.brightspace.com/rels/user'],
-						href: 'user1.json'
+						href: 'user1'
 					}]
 				}]
 			};
@@ -70,24 +101,25 @@
 					properties: { token: 'foo' },
 					links: [{
 						rel: ['https://api.brightspace.com/rels/user'],
-						href: 'user1.json'
+						href: 'user1'
 					}]
 				}, {
 					rel: ['foo'],
 					properties: { token: 'foo' },
 					links: [{
 						rel: ['https://api.brightspace.com/rels/user'],
-						href: 'user2.json'
+						href: 'user2'
 					}]
 				}, {
 					rel: ['foo'],
 					properties: { token: 'foo' },
 					links: [{
 						rel: ['https://api.brightspace.com/rels/user'],
-						href: 'user3.json'
+						href: 'user3'
 					}]
 				}]
 			};
+
 		}, 1000);
 	</script>
 </body>
