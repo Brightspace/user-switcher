@@ -3,11 +3,12 @@
   "description": "Brightspace User Switcher",
   "private": true,
   "scripts": {
-    "postinstall": "bower install",
+    "postinstall": "polymer install --variants",
     "test": "npm run test:lint:js && npm run test:polymer",
-    "test:lint:js": "eslint --ext .js,.html .",
+    "test:lint:js": "eslint --ext ./*.js,./*.html .",
     "test:lint:wc": "polymer lint --input d2l-user-switcher.html && polymer lint --input d2l-user-switcher-item.html",
-    "test:polymer": "polymer test -p"
+    "test:polymer": "polymer test",
+    "test:polymer:local": "cross-env LAUNCHPAD_BROWSERS=chrome polymer test -p --skip-plugin sauce"
   },
   "homepage": "https://github.com/Brightspace/user-switcher",
   "repository": {
@@ -25,11 +26,10 @@
   "author": "D2L Corporation",
   "license": "Apache-2.0",
   "devDependencies": {
-    "bower": "^1.7.7",
-    "eslint": "^2.4.0",
-    "eslint-config-brightspace": "^0.2.1",
-    "eslint-plugin-html": "^1.4.0",
-    "polymer-cli": "^1.1.0",
-    "wct-local":"2.0.12"
+    "cross-env": "^5.1.4",
+    "eslint": "^4.13.1",
+    "eslint-config-brightspace": "^0.4.0",
+    "eslint-plugin-html": "^4.0.1",
+    "polymer-cli": "^1.6.0"
   }
 }
