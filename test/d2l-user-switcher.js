@@ -5,9 +5,17 @@ describe('d2l-user-switcher', function() {
 	var component;
 	var hasUsersTemplate;
 
+	var componentQuerySelector = function(selector) {
+		if (!Polymer.Element) {
+			return component.querySelector(selector);
+		} else {
+			return component.shadowRoot.querySelector(selector);
+		}
+	};
+
 	beforeEach(function() {
 		component = fixture('d2l-user-switcher-fixture');
-		hasUsersTemplate = component.querySelector('.has-users-template');
+		hasUsersTemplate = componentQuerySelector('.has-users-template');
 		sinon.stub(component, '_generateUserRequestFromEntity');
 		component.getToken = function() { return Promise.resolve('token'); };
 	});
@@ -28,7 +36,7 @@ describe('d2l-user-switcher', function() {
 			describe('user switcher', function() {
 				it('should not have an opener container', function(done) {
 					flush(function() {
-						var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
+						var shouldNotExist = componentQuerySelector('.d2l-user-switcher-opener-container');
 						expect(parentData.entities.length).to.equal(0);
 						expect(shouldNotExist).to.not.exist;
 						done();
@@ -37,7 +45,7 @@ describe('d2l-user-switcher', function() {
 
 				it('should not have a dropdown', function(done) {
 					flush(function() {
-						var dropdown = component.querySelector('d2l-dropdown');
+						var dropdown = componentQuerySelector('d2l-dropdown');
 						expect(dropdown).to.not.exist;
 						done();
 					});
@@ -55,7 +63,7 @@ describe('d2l-user-switcher', function() {
 
 					it('now displays content', function(done) {
 						flush(function() {
-							var container = component.querySelector('.d2l-user-switcher-opener-container');
+							var container = componentQuerySelector('.d2l-user-switcher-opener-container');
 							expect(container).to.exist;
 							done();
 						});
@@ -63,7 +71,7 @@ describe('d2l-user-switcher', function() {
 
 					it('still does not have a dropdown', function(done) {
 						flush(function() {
-							var dropdown = component.querySelector('d2l-dropdown');
+							var dropdown = componentQuerySelector('d2l-dropdown');
 							expect(dropdown).to.not.exist;
 							done();
 						});
@@ -78,7 +86,7 @@ describe('d2l-user-switcher', function() {
 
 					it('now has dropdown', function(done) {
 						flush(function() {
-							var dropdown = component.querySelector('d2l-dropdown');
+							var dropdown = componentQuerySelector('d2l-dropdown');
 							expect(dropdown).to.exist;
 							done();
 						});
@@ -96,7 +104,7 @@ describe('d2l-user-switcher', function() {
 			describe('user switcher', function() {
 				it('should not be a dropdown menu', function(done) {
 					flush(function() {
-						var dropdown = component.querySelector('d2l-dropdown');
+						var dropdown = componentQuerySelector('d2l-dropdown');
 						expect(dropdown).to.not.exist;
 						done();
 					});
@@ -104,7 +112,7 @@ describe('d2l-user-switcher', function() {
 
 				it('should have content', function(done) {
 					flush(function() {
-						var container = component.querySelector('.d2l-user-switcher-opener-container');
+						var container = componentQuerySelector('.d2l-user-switcher-opener-container');
 						expect(container).to.exist;
 						done();
 					});
@@ -121,7 +129,7 @@ describe('d2l-user-switcher', function() {
 
 					it('displays childs name', function(done) {
 						flush(function() {
-							var nameElement = component.querySelector('p.selected-user-name');
+							var nameElement = componentQuerySelector('p.selected-user-name');
 							expect(nameElement.hasAttribute('hidden')).to.not.equal(true);
 							expect(nameElement.innerText).to.equal(name);
 							done();
@@ -135,8 +143,8 @@ describe('d2l-user-switcher', function() {
 
 					beforeEach(function() {
 						hasUsersTemplate.render();
-						defaultIcon = component.querySelector('d2l-icon.d2l-user-switcher-opener-image');
-						customImage = component.querySelector('d2l-image.d2l-user-switcher-opener-image');
+						defaultIcon = componentQuerySelector('d2l-icon.d2l-user-switcher-opener-image');
+						customImage = componentQuerySelector('d2l-image.d2l-user-switcher-opener-image');
 					});
 
 					describe('has custom profile picture', function() {
@@ -195,7 +203,7 @@ describe('d2l-user-switcher', function() {
 
 					it('now displays dropdown', function(done) {
 						flush(function() {
-							var dropdown = component.querySelector('d2l-dropdown');
+							var dropdown = componentQuerySelector('d2l-dropdown');
 							expect(dropdown).to.exist;
 							done();
 						});
@@ -210,7 +218,7 @@ describe('d2l-user-switcher', function() {
 
 					it('no longer has content', function(done) {
 						flush(function() {
-							var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
+							var shouldNotExist = componentQuerySelector('.d2l-user-switcher-opener-container');
 							expect(shouldNotExist).to.not.exist;
 							done();
 						});
@@ -218,7 +226,7 @@ describe('d2l-user-switcher', function() {
 
 					it('still does not have a dropdown', function(done) {
 						flush(function() {
-							var dropdown = component.querySelector('d2l-dropdown');
+							var dropdown = componentQuerySelector('d2l-dropdown');
 							expect(dropdown).to.not.exist;
 							done();
 						});
@@ -237,7 +245,7 @@ describe('d2l-user-switcher', function() {
 			describe('user switcher', function() {
 				it('should display a dropdown menu', function(done) {
 					flush(function() {
-						var dropdown = component.querySelector('d2l-dropdown');
+						var dropdown = componentQuerySelector('d2l-dropdown');
 						expect(dropdown).to.exist;
 						done();
 					});
@@ -249,7 +257,7 @@ describe('d2l-user-switcher', function() {
 
 					beforeEach(function() {
 						hasUsersTemplate.render();
-						dropdown = component.querySelector('d2l-dropdown');
+						dropdown = componentQuerySelector('d2l-dropdown');
 						entries = Polymer.dom(dropdown).querySelectorAll('d2l-user-switcher-item');
 					});
 
@@ -325,7 +333,7 @@ describe('d2l-user-switcher', function() {
 
 					it('no longer has content', function(done) {
 						flush(function() {
-							var shouldNotExist = component.querySelector('.d2l-user-switcher-opener-container');
+							var shouldNotExist = componentQuerySelector('.d2l-user-switcher-opener-container');
 							expect(shouldNotExist).to.not.exist;
 							done();
 						});
@@ -340,7 +348,7 @@ describe('d2l-user-switcher', function() {
 
 					it('no longer displays dropdown', function(done) {
 						flush(function() {
-							var dropdown = component.querySelector('d2l-dropdown');
+							var dropdown = componentQuerySelector('d2l-dropdown');
 							expect(dropdown).to.not.exist;
 							done();
 						});
@@ -348,7 +356,7 @@ describe('d2l-user-switcher', function() {
 
 					it('still has content', function(done) {
 						flush(function() {
-							var container = component.querySelector('.d2l-user-switcher-opener-container');
+							var container = componentQuerySelector('.d2l-user-switcher-opener-container');
 							expect(container).to.exist;
 							done();
 						});
