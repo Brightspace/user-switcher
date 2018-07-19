@@ -4,7 +4,6 @@
 <link rel="import" href="../d2l-menu/d2l-menu-item-styles.html">
 <link rel="import" href="../d2l-colors/d2l-colors.html">
 <link rel="import" href="../d2l-user-profile-behavior/d2l-user-profile-behavior.html">
-<link rel="import" href="../d2l-image/d2l-image.html">
 
 <dom-module id="d2l-user-switcher-item">
 	<template>
@@ -57,12 +56,10 @@
 				icon="d2l-tier3:profile-pic"
 				class="user-tile-default-icon d2l-user-switcher-item-image">
 			</d2l-icon>
-			<d2l-image
+			<img
 				hidden$="[[!_hidePlaceholderIcon(_iconUrl)]]"
-				image-url="[[_iconUrl]]"
-				token="[[token]]"
-				class="d2l-user-switcher-item-image">
-			</d2l-image>
+				src="[[_iconUrl]]"
+				class="d2l-user-switcher-item-image" />
 			<div class="d2l-user-switcher-item-info">
 				<p class="d2l-user-switcher-item-name">[[_name]]</p>
 			</div>
