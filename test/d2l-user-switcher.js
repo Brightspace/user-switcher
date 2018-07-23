@@ -144,7 +144,7 @@ describe('d2l-user-switcher', function() {
 					beforeEach(function() {
 						hasUsersTemplate.render();
 						defaultIcon = componentQuerySelector('d2l-icon.d2l-user-switcher-opener-image');
-						customImage = componentQuerySelector('d2l-image.d2l-user-switcher-opener-image');
+						customImage = componentQuerySelector('img.d2l-user-switcher-opener-image');
 					});
 
 					describe('has custom profile picture', function() {

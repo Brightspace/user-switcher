@@ -4,7 +4,7 @@
 <link rel="import" href="../d2l-dropdown/d2l-dropdown-menu.html">
 <link rel="import" href="../d2l-hm-constants-behavior/d2l-hm-constants-behavior.html">
 <link rel="import" href="../d2l-icons/d2l-icons.html">
-<link rel="import" href="../d2l-image/d2l-image.html">
+<link rel="import" href="../ifrau-import/ifrau-client.html">
 <link rel="import" href="../d2l-menu/d2l-menu.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item.html">
 <link rel="import" href="../d2l-menu/d2l-menu-item-link.html">
@@ -80,7 +80,7 @@
 				display: none;
 			}
 			d2l-icon,
-			d2l-image {
+			.d2l-user-switcher-opener-image {
 				transition: opacity 250ms;
 			}
 			.opaque {
@@ -98,12 +98,10 @@
 						icon="d2l-tier3:profile-pic"
 						class="user-tile-default-icon d2l-user-switcher-opener-image opaque">
 					</d2l-icon>
-					<d2l-image
+					<img
 						hidden
-						image-url="[[_iconUrl]]"
-						token="[[token]]"
-						class="d2l-user-switcher-opener-image transparent">
-					</d2l-image>
+						src="[[_iconUrl]]"
+						class="d2l-user-switcher-opener-image transparent" />
 					<p hidden$="[[!placeholders]]" class="text-placeholder">&nbsp;</p>
 					<p hidden$="[[placeholders]]" class="selected-user-name">[[_name]]</p>
 				</div>
@@ -115,12 +113,10 @@
 							icon="d2l-tier3:profile-pic"
 							class="user-tile-default-icon d2l-user-switcher-opener-image">
 						</d2l-icon>
-						<d2l-image
+						<img
 							hidden
-							image-url="[[_iconUrl]]"
-							token="[[token]]"
-							class="d2l-user-switcher-opener-image">
-						</d2l-image>
+							src="[[_iconUrl]]"
+							class="d2l-user-switcher-opener-image" />
 						<p hidden$="[[!placeholders]]" class="text-placeholder">&nbsp;</p>
 						<p hidden$="[[placeholders]]" class="selected-user-name">[[_name]]</p>
 						<d2l-icon class="d2l-user-switcher-opener-chevron-down" icon="d2l-tier1:chevron-down"></d2l-icon>
@@ -141,7 +137,6 @@
 			</template>
 		</template>
 	</template>
-	<script src="https://s.brightspace.com/lib/ifrau/0.22.1/ifrau/client.js"></script>
 	<script>
 		'use strict';
 
@@ -237,7 +232,7 @@
 
 			_onIconUrlChanged: function(iconUrl) {
 				var icon = this.multipleUsers ? this.$$('d2l-dropdown d2l-icon') : this.$$('d2l-icon');
-				var image = this.multipleUsers ? this.$$('d2l-dropdown d2l-image') : this.$$('d2l-image');
+				var image = this.multipleUsers ? this.$$('d2l-dropdown img') : this.$$('img');
 
 				if (iconUrl) {
 					icon.toggleClass('transparent', true);
@@ -246,7 +241,7 @@
 						image.removeAttribute('hidden');
 					}, 250);
 					setTimeout(function() {
-						image.toggleClass('transparent', false);
+						image.classList.toggle('transparent', false);
 					}, 300);
 				} else if (icon && image) {
 					icon.removeAttribute('hidden');
