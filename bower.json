@@ -24,7 +24,7 @@
     "d2l-icons": "^5.0.0",
     "d2l-menu": "^1.0.0",
     "d2l-user-profile-behavior": "Brightspace/user-profile-behavior#^3.0.1",
-    "ifrau-import": "Brightspace/ifrau-import#initial",
+    "ifrau-import": "Brightspace/ifrau-import#^1.0.0",
     "iron-icon": "PolymerElements/iron-icon#1 - 2",
     "polymer": "1 - 2"
   },
