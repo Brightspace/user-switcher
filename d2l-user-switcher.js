@@ -12,14 +12,14 @@ import '@polymer/polymer/polymer-legacy.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-dropdown/d2l-dropdown.js';
 import 'd2l-dropdown/d2l-dropdown-menu.js';
-import 'd2l-hypermedia-constants/d2l-hm-constants-behavior.js';
+import { Rels } from 'd2l-hypermedia-constants';
 import 'd2l-icons/d2l-icons.js';
 import 'd2l-image/d2l-image.js';
-import 'ifrau-import/ifrau-client.js';
 import 'd2l-menu/d2l-menu.js';
 import 'd2l-menu/d2l-menu-item.js';
 import 'd2l-menu/d2l-menu-item-link.js';
 import 'd2l-user-profile-behavior/d2l-user-profile-behavior.js';
+import SirenParse from 'siren-parser';
 import './d2l-user-switcher-item.js';
 import './localize-behavior.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
@@ -135,7 +135,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-user-switcher">
 			</template>
 		</template>
 	</template>
-	
+
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
@@ -186,7 +186,6 @@ Polymer({
 	},
 
 	behaviors: [
-		window.D2L.Hypermedia.HMConstantsBehavior,
 		window.D2L.UserProfileBehavior,
 		window.D2L.UserSwitcher.LocalizeBehavior
 	],
@@ -200,12 +199,12 @@ Polymer({
 	},
 
 	_parseEntity: function(entity) {
-		return window.D2L.Hypermedia.Siren.Parse(entity);
+		return SirenParse(entity);
 	},
 
 	_getUserUrl: function(user) {
 		var userEntity = this._parseEntity(user);
-		return (userEntity.getLinkByRel(this.HypermediaRels.user) || {}).href;
+		return (userEntity.getLinkByRel(Rels.user) || {}).href;
 	},
 
 	close: function() {
@@ -280,7 +279,7 @@ Polymer({
 	_generateUserRequestFromEntity: function(student) {
 		var self = this;
 		var studentEntity = self._parseEntity(student);
-		var studentLink = studentEntity.getLinkByRel(self.HypermediaRels.user);
+		var studentLink = studentEntity.getLinkByRel(Rels.user);
 		var studentId = studentLink.href.match(/[0-9a-zA-Z]+$/)[0];
 		if (studentId === self.selectedUserId) {
 			var userUrl = self._getUserUrl(student);

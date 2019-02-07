@@ -1,16 +1,12 @@
 /* global describe, fixture, it, expect, beforeEach, MockInteractions */
-'use strict';
+import { dom } from '@polymer/polymer/lib/legacy/polymer.dom.js';
 
 describe('d2l-user-switcher', function() {
 	var component;
 	var hasUsersTemplate;
 
 	var componentQuerySelector = function(selector) {
-		if (!Polymer.Element) {
-			return component.querySelector(selector);
-		} else {
-			return component.shadowRoot.querySelector(selector);
-		}
+		return component.shadowRoot.querySelector(selector);
 	};
 
 	beforeEach(function() {
@@ -258,7 +254,7 @@ describe('d2l-user-switcher', function() {
 					beforeEach(function() {
 						hasUsersTemplate.render();
 						dropdown = componentQuerySelector('d2l-dropdown');
-						entries = Polymer.dom(dropdown).querySelectorAll('d2l-user-switcher-item');
+						entries = dom(dropdown).querySelectorAll('d2l-user-switcher-item');
 					});
 
 					it('should have a user-switcher-item for each child', function(done) {

@@ -5,7 +5,6 @@ import 'd2l-menu/d2l-menu-item-styles.js';
 import 'd2l-colors/d2l-colors.js';
 import 'd2l-image/d2l-image.js';
 import 'd2l-user-profile-behavior/d2l-user-profile-behavior.js';
-import 'ifrau-import/ifrau-client.js';
 import { Polymer } from '@polymer/polymer/lib/legacy/polymer-fn.js';
 const $_documentContainer = document.createElement('template');
 
@@ -64,7 +63,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-user-switcher-item">
 			</div>
 		</a>
 	</template>
-	
+
 </dom-module>`;
 
 document.head.appendChild($_documentContainer.content);
