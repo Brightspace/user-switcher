@@ -1,11 +1,22 @@
 <head>
-	<script src="../../webcomponentsjs/webcomponents-lite.js"></script>
-	<link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
-	<link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-	<link rel="import" href="../../d2l-typography/d2l-typography.html">
-	<link rel="import" href="../../d2l-fetch/d2l-fetch.html">
-	<link rel="import" href="../d2l-user-switcher.html">
-	<style>
+	<script src="../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+	<script type="module" src="../../@polymer/iron-demo-helpers/demo-pages-shared-styles.js"></script>
+	<script type="module" src="../../@polymer/iron-demo-helpers/demo-snippet.js"></script>
+	<script type="module" src="../../d2l-typography/d2l-typography.js"></script>
+	<script type="module" src="../../d2l-fetch/d2l-fetch.js"></script>
+	<script type="module" src="../d2l-user-switcher.js"></script>
+	<!-- FIXME(polymer-modulizer):
+		These imperative modules that innerHTML your HTML are
+		a hacky way to be sure that any mixins in included style
+		modules are ready before any elements that reference them are
+		instantiated, otherwise the CSS @apply mixin polyfill won't be
+		able to expand the underlying CSS custom properties.
+		See: https://github.com/Polymer/polymer-modulizer/issues/154
+		-->
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<style>
 		d2l-user-switcher {
 			margin-bottom: 20px;
 		}
@@ -14,16 +25,34 @@
 			height: 50px;
 			width: 300px;
 		}
-	</style>
-	<custom-style>
+	</style>`;
+
+document.head.appendChild($_documentContainer.content);
+</script>
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style>
 		<style is="custom-style" include="demo-pages-shared-styles"></style>
-	</custom-style>
-	<custom-style include="d2l-typography">
+	</custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<custom-style include="d2l-typography">
 		<style is="custom-style" include="d2l-typography"></style>
-	</custom-style>
+	</custom-style>`;
+
+document.body.appendChild($_documentContainer.content);
+</script>
 </head>
 <body unresolved class="d2l-typography">
-	<div class="vertical-section-container centered">
+	<script type="module">
+const $_documentContainer = document.createElement('template');
+
+$_documentContainer.innerHTML = `<div class="vertical-section-container centered">
 		<demo-snippet><template>
 			<div class="wrapper">
 				<d2l-user-switcher id="no-placeholder"></d2l-user-switcher>
@@ -32,94 +61,101 @@
 
 		<demo-snippet><template>
 			<div class="wrapper">
-				<d2l-user-switcher id="placeholder" placeholders></d2l-user-switcher>
+				<d2l-user-switcher id="placeholder" placeholders=""></d2l-user-switcher>
 			</div>
 		</template></demo-snippet>
 
 		<demo-snippet><template>
 			<div class="wrapper">
-				<d2l-user-switcher id="multi-user" placeholders></d2l-user-switcher>
+				<d2l-user-switcher id="multi-user" placeholders=""></d2l-user-switcher>
 			</div>
 		</template></demo-snippet>
-	</div>
+	</div>`;
 
-	<script>
-		'use strict';
+document.body.appendChild($_documentContainer.content);
+</script>
 
-		setTimeout(function() {
-			var placeholderSwitcher = document.querySelector('#placeholder');
-			var noPlaceholderSwitcher = document.getElementById('no-placeholder');
-			var multiUserSwitcher = document.getElementById('multi-user');
+	<script type="module">
+import '@polymer/iron-demo-helpers/demo-pages-shared-styles.js';
+import '@polymer/iron-demo-helpers/demo-snippet.js';
+import 'd2l-typography/d2l-typography.js';
+import 'd2l-fetch/d2l-fetch.js';
+import '../d2l-user-switcher.js';
 
-			placeholderSwitcher.hasUsers = true;
-			noPlaceholderSwitcher.hasUsers = true;
-			multiUserSwitcher.hasUsers = true;
-		}, 100);
+setTimeout(function() {
+	var placeholderSwitcher = document.querySelector('#placeholder');
+	var noPlaceholderSwitcher = document.getElementById('no-placeholder');
+	var multiUserSwitcher = document.getElementById('multi-user');
 
-		setTimeout(function() {
-			var placeholderSwitcher = document.querySelector('#placeholder');
-			var noPlaceholderSwitcher = document.getElementById('no-placeholder');
-			var multiUserSwitcher = document.getElementById('multi-user');
+	placeholderSwitcher.hasUsers = true;
+	noPlaceholderSwitcher.hasUsers = true;
+	multiUserSwitcher.hasUsers = true;
+}, 100);
 
-			placeholderSwitcher.hasUsers = true;
-			noPlaceholderSwitcher.hasUsers = true;
-			multiUserSwitcher.hasUsers = true;
+setTimeout(function() {
+	var placeholderSwitcher = document.querySelector('#placeholder');
+	var noPlaceholderSwitcher = document.getElementById('no-placeholder');
+	var multiUserSwitcher = document.getElementById('multi-user');
 
-			var tokenFunc = function() { return Promise.resolve('token'); };
+	placeholderSwitcher.hasUsers = true;
+	noPlaceholderSwitcher.hasUsers = true;
+	multiUserSwitcher.hasUsers = true;
 
-			placeholderSwitcher.getToken = tokenFunc;
-			noPlaceholderSwitcher.getToken = tokenFunc;
-			multiUserSwitcher.getToken = tokenFunc;
+	var tokenFunc = function() { return Promise.resolve('token'); };
 
-			placeholderSwitcher.selectedUserId = 'user1';
-			noPlaceholderSwitcher.selectedUserId = 'user1';
-			multiUserSwitcher.selectedUserId = 'user1';
+	placeholderSwitcher.getToken = tokenFunc;
+	noPlaceholderSwitcher.getToken = tokenFunc;
+	multiUserSwitcher.getToken = tokenFunc;
 
-			placeholderSwitcher.parentData = {
-				entities: [{
-					rel: ['foo'],
-					properties: { token: 'foo' },
-					links: [{
-						rel: ['https://api.brightspace.com/rels/user'],
-						href: 'user1'
-					}]
-				}]
-			};
-			noPlaceholderSwitcher.parentData = {
-				entities: [{
-					rel: ['foo'],
-					properties: { token: 'foo' },
-					links: [{
-						rel: ['https://api.brightspace.com/rels/user'],
-						href: 'user1'
-					}]
-				}]
-			};
-			multiUserSwitcher.parentData = {
-				entities: [{
-					rel: ['foo'],
-					properties: { token: 'foo' },
-					links: [{
-						rel: ['https://api.brightspace.com/rels/user'],
-						href: 'user1'
-					}]
-				}, {
-					rel: ['foo'],
-					properties: { token: 'foo' },
-					links: [{
-						rel: ['https://api.brightspace.com/rels/user'],
-						href: 'user2'
-					}]
-				}, {
-					rel: ['foo'],
-					properties: { token: 'foo' },
-					links: [{
-						rel: ['https://api.brightspace.com/rels/user'],
-						href: 'user3'
-					}]
-				}]
-			};
+	placeholderSwitcher.selectedUserId = 'user1';
+	noPlaceholderSwitcher.selectedUserId = 'user1';
+	multiUserSwitcher.selectedUserId = 'user1';
 
-		}, 1000);
-	</script>
+	placeholderSwitcher.parentData = {
+		entities: [{
+			rel: ['foo'],
+			properties: { token: 'foo' },
+			links: [{
+				rel: ['https://api.brightspace.com/rels/user'],
+				href: 'user1'
+			}]
+		}]
+	};
+	noPlaceholderSwitcher.parentData = {
+		entities: [{
+			rel: ['foo'],
+			properties: { token: 'foo' },
+			links: [{
+				rel: ['https://api.brightspace.com/rels/user'],
+				href: 'user1'
+			}]
+		}]
+	};
+	multiUserSwitcher.parentData = {
+		entities: [{
+			rel: ['foo'],
+			properties: { token: 'foo' },
+			links: [{
+				rel: ['https://api.brightspace.com/rels/user'],
+				href: 'user1'
+			}]
+		}, {
+			rel: ['foo'],
+			properties: { token: 'foo' },
+			links: [{
+				rel: ['https://api.brightspace.com/rels/user'],
+				href: 'user2'
+			}]
+		}, {
+			rel: ['foo'],
+			properties: { token: 'foo' },
+			links: [{
+				rel: ['https://api.brightspace.com/rels/user'],
+				href: 'user3'
+			}]
+		}]
+	};
+
+}, 1000);
+</script>
 </body>

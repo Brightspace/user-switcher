@@ -5,6 +5,5 @@ sudo: required
 addons:
   chrome: stable
 script:
-- npm run test:lint:html
-- npm run test:lint:wc
+- npm run test:lint
 - xvfb-run polymer test --skip-plugin sauce
