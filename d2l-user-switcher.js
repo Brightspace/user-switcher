@@ -293,14 +293,14 @@ Polymer({
 	_onItemClick: function(e) {
 		var data = e.model.item;
 		this.close();
-		this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true }));
+		this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true, composed: true }));
 	},
 
 	_onItemKeydown: function(e) {
 		if (e.keyCode === 13 || e.keyCode === 32) {
 			var data = e.model.item;
 			this.close();
-			this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true }));
+			this.dispatchEvent(new CustomEvent('studentSelected', { detail: { data: data }, bubbles: true, composed: true }));
 		}
 	}
 });
