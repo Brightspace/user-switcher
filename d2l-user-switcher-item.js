@@ -27,7 +27,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-user-switcher-item">
 				border-radius: 6px;
 				overflow: hidden;
 			}
-			 :host-context([dir="rtl"]) .d2l-user-switcher-item-image {
+			 :host(:dir(rtl)) .d2l-user-switcher-item-image {
 				margin-right: 0;
 				margin-left: 15px;
 			}
