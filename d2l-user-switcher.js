@@ -234,7 +234,7 @@ Polymer({
 		var image = this.multipleUsers ? this.$$('d2l-dropdown d2l-image') : this.$$('d2l-image');
 
 		if (iconUrl) {
-			icon.toggleClass('transparent', true);
+			icon.classList.add('transparent');
 			setTimeout(function() {
 				icon.setAttribute('hidden', true);
 				image.removeAttribute('hidden');
@@ -244,7 +244,7 @@ Polymer({
 			}, 300);
 		} else if (icon && image) {
 			icon.removeAttribute('hidden');
-			icon.toggleClass('transparent', false);
+			icon.classList.remove('transparent', false);
 			image.setAttribute('hidden', true);
 		}
 	},
