@@ -234,17 +234,17 @@ Polymer({
 		var image = this.multipleUsers ? this.$$('d2l-dropdown d2l-image') : this.$$('d2l-image');
 
 		if (iconUrl) {
-			icon.toggleClass('transparent', true);
+			icon.classList.add('transparent');
 			setTimeout(function() {
 				icon.setAttribute('hidden', true);
 				image.removeAttribute('hidden');
 			}, 250);
 			setTimeout(function() {
-				image.toggleClass('transparent', false);
+				image.classList.remove('transparent');
 			}, 300);
 		} else if (icon && image) {
 			icon.removeAttribute('hidden');
-			icon.toggleClass('transparent', false);
+			icon.classList.remove('transparent');
 			image.setAttribute('hidden', true);
 		}
 	},
