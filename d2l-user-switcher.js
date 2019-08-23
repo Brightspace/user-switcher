@@ -240,7 +240,7 @@ Polymer({
 				image.removeAttribute('hidden');
 			}, 250);
 			setTimeout(function() {
-				image.toggleClass('transparent', false);
+				image.classList.remove('transparent');
 			}, 300);
 		} else if (icon && image) {
 			icon.removeAttribute('hidden');
