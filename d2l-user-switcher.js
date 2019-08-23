@@ -244,7 +244,7 @@ Polymer({
 			}, 300);
 		} else if (icon && image) {
 			icon.removeAttribute('hidden');
-			icon.classList.remove('transparent', false);
+			icon.classList.remove('transparent');
 			image.setAttribute('hidden', true);
 		}
 	},
