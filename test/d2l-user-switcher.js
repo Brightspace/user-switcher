@@ -268,11 +268,12 @@ describe('d2l-user-switcher', function() {
 						var studentSelectedSpy;
 						var entry;
 
-						beforeEach(function() {
+						beforeEach(async() => {
 							studentSelectedSpy = sinon.spy();
 							component.addEventListener('studentSelected', studentSelectedSpy);
 
 							entry = entries[0];
+							await entry.updateComplete;
 						});
 
 						afterEach(function() {
