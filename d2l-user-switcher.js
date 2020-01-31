@@ -16,8 +16,6 @@ import { Rels } from 'd2l-hypermedia-constants';
 import 'd2l-icons/d2l-icons.js';
 import 'd2l-image/d2l-image.js';
 import 'd2l-menu/d2l-menu.js';
-import 'd2l-menu/d2l-menu-item.js';
-import 'd2l-menu/d2l-menu-item-link.js';
 import 'd2l-user-profile-behavior/d2l-user-profile-behavior.js';
 import SirenParse from 'siren-parser';
 import './d2l-user-switcher-item.js';
