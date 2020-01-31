@@ -1,4 +1,4 @@
-import { AppLocalizeBehavior } from '@polymer/app-localize-behavior/app-localize-behavior.js';
+import { AppLocalizeBehavior } from 'd2l-localize-behavior/app-localize-behavior.js';
 import './lang/ar.js';
 import './lang/en.js';
 import './lang/es.js';
