@@ -223,9 +223,9 @@ Polymer({
 		return (userEntity.getLinkByRel(Rels.user) || {}).href;
 	},
 
-	_selectedUser: function(selectedUserId,item) {
+	_selectedUser: function(selectedUserId, item) {
 		var user = this._getUserUrl(item);
-		return selectedUserId === user.match(/[0-9a-zA-Z]+$/)[0] ? "selected-user-name-dropdown" : "";
+		return selectedUserId === user.match(/[0-9a-zA-Z]+$/)[0] ? 'selected-user-name-dropdown' : '';
 	},
 
 	close: function() {
