@@ -44,12 +44,20 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-user-switcher">
 				color: inherit;
 				padding: 0;
 				height: 100%;
+				width: 300px;
 			}
 			p {
 				margin: 0;
 			}
 			.pointer {
 				cursor: pointer;
+			}
+			button p {
+				word-break: break-word;
+    			display: -webkit-box;
+    			-webkit-box-orient: vertical;
+    			-webkit-line-clamp: 1;
+    			overflow: hidden;
 			}
 			button:focus > d2l-icon,
 			button:hover > d2l-icon,
@@ -97,6 +105,16 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-user-switcher">
 			.transparent {
 				opacity: 0;
 			}
+			.selected-user-name-dropdown {
+				background-color: var(--d2l-color-celestine-plus-2);
+				border-top: 1px var(--d2l-color-celestine) solid;
+				border-bottom: 1px var(--d2l-color-celestine) solid;
+				z-index: 2;
+			}
+			.selected-user-name {
+				flex: 1;
+				text-align: left;
+			}
 		</style>
 
 		<template is="dom-if" if="[[hasUsers]]" class="has-users-template">
@@ -124,7 +142,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-user-switcher">
 					<d2l-dropdown-menu vertical-offset="5" no-auto-fit="false">
 						<d2l-menu label="[[localize('userSwitcherMenu')]]">
 							<template is="dom-repeat" items="[[parentData.entities]]">
-								<d2l-user-switcher-item on-tap="_onItemClick" on-keydown="_onItemKeydown" user-url="[[_getUserUrl(item)]]" get-token="[[getToken]]">
+								<d2l-user-switcher-item class$="[[_selectedUser(selectedUserId,item)]]" on-tap="_onItemClick" on-keydown="_onItemKeydown" user-url="[[_getUserUrl(item)]]" get-token="[[getToken]]">
 								</d2l-user-switcher-item>
 							</template>
 						</d2l-menu>
@@ -203,6 +221,11 @@ Polymer({
 	_getUserUrl: function(user) {
 		var userEntity = this._parseEntity(user);
 		return (userEntity.getLinkByRel(Rels.user) || {}).href;
+	},
+
+	_selectedUser: function(selectedUserId,item) {
+		var user = this._getUserUrl(item);
+		return selectedUserId === user.match(/[0-9a-zA-Z]+$/)[0] ? "selected-user-name-dropdown" : "";
 	},
 
 	close: function() {
