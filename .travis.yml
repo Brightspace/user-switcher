@@ -6,4 +6,4 @@ addons:
   chrome: stable
 script:
 - npm run test:lint
-- xvfb-run polymer test --skip-plugin sauce
+#- xvfb-run polymer test --skip-plugin sauce
