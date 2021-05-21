@@ -54,11 +54,9 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-user-switcher">
 				cursor: pointer;
 			}
 			button p {
-				word-break: break-word;
-    			display: -webkit-box;
-    			-webkit-box-orient: vertical;
-    			-webkit-line-clamp: 1;
-    			overflow: hidden;
+				white-space: nowrap;
+				overflow: hidden;
+				text-overflow: ellipsis;
 			}
 			button:focus > d2l-icon,
 			button:hover > d2l-icon,
