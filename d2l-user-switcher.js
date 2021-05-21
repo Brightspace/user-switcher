@@ -44,7 +44,8 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-user-switcher">
 				color: inherit;
 				padding: 0;
 				height: 100%;
-				width: 300px;
+				max-width: 100%;
+				width: 18.75rem;
 			}
 			p {
 				margin: 0;
@@ -224,7 +225,7 @@ Polymer({
 	},
 
 	_selectedUser: function(selectedUserId, item) {
-		var user = this._getUserUrl(item);
+		const user = this._getUserUrl(item);
 		return selectedUserId === user.match(/[0-9a-zA-Z]+$/)[0] ? 'selected-user-name-dropdown' : '';
 	},
 
