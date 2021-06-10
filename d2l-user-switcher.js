@@ -45,7 +45,7 @@ $_documentContainer.innerHTML = `<dom-module id="d2l-user-switcher">
 				padding: 0;
 				height: 100%;
 				max-width: 100%;
-				width: 18.75rem;
+				width: 15rem;
 			}
 			p {
 				margin: 0;
